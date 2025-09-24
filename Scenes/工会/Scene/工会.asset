@@ -150,15 +150,15 @@ MonoBehaviour:
     dimension: 1
   bloomIntensity:
     m_OverrideState: 1
-    m_Value: 1.42
+    m_Value: 0.2
   bloomThreshold:
     m_OverrideState: 1
-    m_Value: 0.71
+    m_Value: 0.9
   bloomConservativeThreshold:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   bloomSpread:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0.39
   bloomMaxBrightness:
     m_OverrideState: 0
@@ -190,7 +190,7 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 1
   bloomQuickerBlur:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   bloomCustomize:
     m_OverrideState: 0
@@ -675,6 +675,9 @@ MonoBehaviour:
   outlineUsesOptimizedShader:
     m_OverrideState: 0
     m_Value: 0
+  outlineLayerCutOff:
+    m_OverrideState: 0
+    m_Value: 0
   nightVision:
     m_OverrideState: 0
     m_Value: 0
@@ -783,6 +786,30 @@ MonoBehaviour:
   mode:
     m_OverrideState: 1
     m_Value: 2
+  neutralHDRRangeReductionMode:
+    m_OverrideState: 0
+    m_Value: 2
+  acesPreset:
+    m_OverrideState: 0
+    m_Value: 3
+  hueShiftAmount:
+    m_OverrideState: 0
+    m_Value: 0
+  detectPaperWhite:
+    m_OverrideState: 0
+    m_Value: 0
+  paperWhite:
+    m_OverrideState: 0
+    m_Value: 300
+  detectBrightnessLimits:
+    m_OverrideState: 0
+    m_Value: 1
+  minNits:
+    m_OverrideState: 0
+    m_Value: 0.005
+  maxNits:
+    m_OverrideState: 0
+    m_Value: 1000
 --- !u!114 &-4549932277622601333
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -820,7 +847,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
+  skipIterations:
+    m_OverrideState: 0
+    m_Value: 1
   threshold:
     m_OverrideState: 1
     m_Value: 1
@@ -839,9 +869,12 @@ MonoBehaviour:
   highQualityFiltering:
     m_OverrideState: 0
     m_Value: 0
-  skipIterations:
+  downscale:
     m_OverrideState: 0
-    m_Value: 1
+    m_Value: 0
+  maxIterations:
+    m_OverrideState: 0
+    m_Value: 6
   dirtTexture:
     m_OverrideState: 0
     m_Value: {fileID: 0}
