@@ -17356,6 +17356,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2736767013392328409, guid: 1cb36dc7b5611784db16f7acbd8ac9a3, type: 3}
+      propertyPath: GroundLayers.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4856399011541971475, guid: 1cb36dc7b5611784db16f7acbd8ac9a3, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -17400,6 +17404,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5430838549976544130, guid: 1cb36dc7b5611784db16f7acbd8ac9a3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5430838549976544130, guid: 1cb36dc7b5611784db16f7acbd8ac9a3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[1].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5430838549976544130, guid: 1cb36dc7b5611784db16f7acbd8ac9a3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[2].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5430838549976544130, guid: 1cb36dc7b5611784db16f7acbd8ac9a3, type: 3}
+      propertyPath: m_ActionEvents.Array.data[3].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7407959299153891261, guid: 1cb36dc7b5611784db16f7acbd8ac9a3, type: 3}
       propertyPath: m_Name
       value: PlayerArmature
@@ -17408,14 +17428,62 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2736767013392328409, guid: 1cb36dc7b5611784db16f7acbd8ac9a3, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7407959299153891261, guid: 1cb36dc7b5611784db16f7acbd8ac9a3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1884431327}
   m_SourcePrefab: {fileID: 100100000, guid: 1cb36dc7b5611784db16f7acbd8ac9a3, type: 3}
 --- !u!4 &1884431325 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4914313111300562108, guid: 1cb36dc7b5611784db16f7acbd8ac9a3, type: 3}
+  m_PrefabInstance: {fileID: 1884431324}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1884431326 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7407959299153891261, guid: 1cb36dc7b5611784db16f7acbd8ac9a3, type: 3}
+  m_PrefabInstance: {fileID: 1884431324}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1884431327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884431326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baccb49324d28d7448dcf23c573d6e16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSpeed: 2
+  SprintSpeed: 5.335
+  RotationSmoothTime: 0.12
+  SpeedChangeRate: 10
+  LandingAudioClip: {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
+  FootstepAudioClips: []
+  FootstepAudioVolume: 0.3
+  JumpHeight: 1.2
+  Gravity: -15
+  JumpTimeout: 0.3
+  FallTimeout: 0.15
+  Grounded: 1
+  GroundedOffset: -0.14
+  GroundedRadius: 0.28
+  GroundLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  CinemachineCameraTarget: {fileID: 1884431328}
+  TopClamp: 70
+  BottomClamp: -30
+  CameraAngleOverride: 0
+  LockCameraPosition: 0
+--- !u!1 &1884431328 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3638898559378461076, guid: 1cb36dc7b5611784db16f7acbd8ac9a3, type: 3}
   m_PrefabInstance: {fileID: 1884431324}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1893442149
