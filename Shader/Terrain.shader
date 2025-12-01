@@ -30,8 +30,8 @@ Shader "ASE/Terrain"
 		_Float11("草地粗糙", Range( 0 , 1)) = 0
 		[NoScaleOffset]_TextureSample10("草地法线", 2D) = "bump" {}
 		_Float9("草地法线强度", Range( 0 , 1)) = 1
-		_Float8("草地分布比例", Range( 0 , 500)) = 39.17263
 		_Float13("草地分布平滑", Range( 0.1 , 1)) = 1
+		_Float14("草地分布", Range( 1 , 50)) = 5
 
 
 		//_TransmissionShadow( "Transmission Shadow", Range( 0, 1 ) ) = 0.5
@@ -222,16 +222,18 @@ Shader "ASE/Terrain"
 			#pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
 
 			
+            #pragma multi_compile _ EVALUATE_SH_MIXED EVALUATE_SH_VERTEX
+		
 
 			#pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
 			#pragma multi_compile_fragment _ _REFLECTION_PROBE_BLENDING
 			#pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
 
 			
-			#pragma multi_compile_fragment _ _SHADOWS_SOFT
-           
 
 			
+			#pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
+           
 
 			#pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
 			#pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
@@ -240,12 +242,8 @@ Shader "ASE/Terrain"
 			#pragma multi_compile _ _FORWARD_PLUS
 		
 			
-            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
-		
 
 			
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-		
 
 			#pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
 			#pragma multi_compile _ SHADOWS_SHADOWMASK
@@ -260,8 +258,16 @@ Shader "ASE/Terrain"
 			#define SHADERPASS SHADERPASS_FORWARD
 
 			
+            #if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#endif
+		
 
 			
+			#if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
+			#endif
+		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -271,10 +277,12 @@ Shader "ASE/Terrain"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 
 			
+            #if ASE_SRP_VERSION >=140010
+			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+			#endif
+		
 
 			
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-           
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
@@ -339,7 +347,7 @@ Shader "ASE/Terrain"
 			float _Float1;
 			float _Float2;
 			float _Float13;
-			float _Float8;
+			float _Float14;
 			float _Float5;
 			float _Float7;
 			float _Float0;
@@ -627,22 +635,20 @@ Shader "ASE/Terrain"
 
 				float2 temp_cast_0 = (_Float1).xx;
 				float2 texCoord11 = IN.ase_texcoord8.xy * temp_cast_0 + float2( 0,0 );
-				float2 temp_cast_1 = (_Float4).xx;
-				float2 texCoord27 = IN.ase_texcoord8.xy * temp_cast_1 + float2( 0,0 );
-				float simplePerlin2D113 = snoise( texCoord27*7.7 );
+				float2 texCoord27 = IN.ase_texcoord8.xy * float2( 1,1 ) + float2( 0,0 );
+				float simplePerlin2D113 = snoise( texCoord27*_Float4 );
 				simplePerlin2D113 = simplePerlin2D113*0.5 + 0.5;
 				float smoothstepResult87 = smoothstep( 0.0 , _Float12 , simplePerlin2D113);
-				float2 temp_cast_2 = (_Float2).xx;
-				float2 texCoord22 = IN.ase_texcoord8.xy * temp_cast_2 + float2( 0,0 );
+				float2 temp_cast_1 = (_Float2).xx;
+				float2 texCoord22 = IN.ase_texcoord8.xy * temp_cast_1 + float2( 0,0 );
 				float temp_output_36_0 = ( 1.0 - smoothstepResult87 );
-				float2 temp_cast_3 = (_Float8).xx;
-				float2 texCoord66 = IN.ase_texcoord8.xy * temp_cast_3 + float2( 0,0 );
-				float simplePerlin2D114 = snoise( texCoord66*7.7 );
+				float2 texCoord123 = IN.ase_texcoord8.xy * float2( 1,1 ) + float2( 0,0 );
+				float simplePerlin2D114 = snoise( texCoord123*_Float14 );
 				simplePerlin2D114 = simplePerlin2D114*0.5 + 0.5;
 				float smoothstepResult83 = smoothstep( 0.0 , _Float13 , simplePerlin2D114);
 				float temp_output_121_0 = saturate( ( 1.0 - smoothstepResult83 ) );
-				float2 temp_cast_4 = (_Float7).xx;
-				float2 texCoord61 = IN.ase_texcoord8.xy * temp_cast_4 + float2( 0,0 );
+				float2 temp_cast_2 = (_Float7).xx;
+				float2 texCoord61 = IN.ase_texcoord8.xy * temp_cast_2 + float2( 0,0 );
 				
 				float3 unpack14 = UnpackNormalScale( tex2D( _TextureSample1, texCoord11 ), _Float0 );
 				unpack14.z = lerp( 1, unpack14.z, saturate(_Float0) );
@@ -920,8 +926,6 @@ Shader "ASE/Terrain"
 			#pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
 
 			
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -929,6 +933,10 @@ Shader "ASE/Terrain"
 			#define SHADERPASS SHADERPASS_SHADOWCASTER
 
 			
+            #if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#endif
+		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -938,10 +946,12 @@ Shader "ASE/Terrain"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 
 			
+            #if ASE_SRP_VERSION >=140010
+			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+			#endif
+		
 
 			
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-           
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
@@ -991,7 +1001,7 @@ Shader "ASE/Terrain"
 			float _Float1;
 			float _Float2;
 			float _Float13;
-			float _Float8;
+			float _Float14;
 			float _Float5;
 			float _Float7;
 			float _Float0;
@@ -1244,17 +1254,16 @@ Shader "ASE/Terrain"
 			HLSLPROGRAM
 
 			
-            #define _NORMAL_DROPOFF_TS 1
-            #pragma multi_compile_instancing
-            #pragma multi_compile _ LOD_FADE_CROSSFADE
-            #define ASE_FOG 1
-            #define _NORMALMAP 1
-            #define ASE_SRP_VERSION 140012
+
+			#define _NORMAL_DROPOFF_TS 1
+			#pragma multi_compile_instancing
+			#pragma multi_compile _ LOD_FADE_CROSSFADE
+			#define ASE_FOG 1
+			#define _NORMALMAP 1
+			#define ASE_SRP_VERSION 140012
 
 
 			
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -1262,6 +1271,10 @@ Shader "ASE/Terrain"
 			#define SHADERPASS SHADERPASS_DEPTHONLY
 
 			
+            #if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#endif
+		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -1271,10 +1284,12 @@ Shader "ASE/Terrain"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 
 			
+            #if ASE_SRP_VERSION >=140010
+			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+			#endif
+		
 
 			
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-           
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
@@ -1324,7 +1339,7 @@ Shader "ASE/Terrain"
 			float _Float1;
 			float _Float2;
 			float _Float13;
-			float _Float8;
+			float _Float14;
 			float _Float5;
 			float _Float7;
 			float _Float0;
@@ -1569,10 +1584,12 @@ Shader "ASE/Terrain"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 
 			
+            #if ASE_SRP_VERSION >=140010
+			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+			#endif
+		
 
 			
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-           
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/MetaInput.hlsl"
@@ -1617,7 +1634,7 @@ Shader "ASE/Terrain"
 			float _Float1;
 			float _Float2;
 			float _Float13;
-			float _Float8;
+			float _Float14;
 			float _Float5;
 			float _Float7;
 			float _Float0;
@@ -1854,22 +1871,20 @@ Shader "ASE/Terrain"
 
 				float2 temp_cast_0 = (_Float1).xx;
 				float2 texCoord11 = IN.ase_texcoord4.xy * temp_cast_0 + float2( 0,0 );
-				float2 temp_cast_1 = (_Float4).xx;
-				float2 texCoord27 = IN.ase_texcoord4.xy * temp_cast_1 + float2( 0,0 );
-				float simplePerlin2D113 = snoise( texCoord27*7.7 );
+				float2 texCoord27 = IN.ase_texcoord4.xy * float2( 1,1 ) + float2( 0,0 );
+				float simplePerlin2D113 = snoise( texCoord27*_Float4 );
 				simplePerlin2D113 = simplePerlin2D113*0.5 + 0.5;
 				float smoothstepResult87 = smoothstep( 0.0 , _Float12 , simplePerlin2D113);
-				float2 temp_cast_2 = (_Float2).xx;
-				float2 texCoord22 = IN.ase_texcoord4.xy * temp_cast_2 + float2( 0,0 );
+				float2 temp_cast_1 = (_Float2).xx;
+				float2 texCoord22 = IN.ase_texcoord4.xy * temp_cast_1 + float2( 0,0 );
 				float temp_output_36_0 = ( 1.0 - smoothstepResult87 );
-				float2 temp_cast_3 = (_Float8).xx;
-				float2 texCoord66 = IN.ase_texcoord4.xy * temp_cast_3 + float2( 0,0 );
-				float simplePerlin2D114 = snoise( texCoord66*7.7 );
+				float2 texCoord123 = IN.ase_texcoord4.xy * float2( 1,1 ) + float2( 0,0 );
+				float simplePerlin2D114 = snoise( texCoord123*_Float14 );
 				simplePerlin2D114 = simplePerlin2D114*0.5 + 0.5;
 				float smoothstepResult83 = smoothstep( 0.0 , _Float13 , simplePerlin2D114);
 				float temp_output_121_0 = saturate( ( 1.0 - smoothstepResult83 ) );
-				float2 temp_cast_4 = (_Float7).xx;
-				float2 texCoord61 = IN.ase_texcoord4.xy * temp_cast_4 + float2( 0,0 );
+				float2 temp_cast_2 = (_Float7).xx;
+				float2 texCoord61 = IN.ase_texcoord4.xy * temp_cast_2 + float2( 0,0 );
 				
 
 				float3 BaseColor = ( ( ( ( ( _Color1 * tex2D( _TextureSample0, texCoord11 ) ) * smoothstepResult87 ) + ( ( _Color0 * tex2D( _TextureSample2, texCoord22 ) ) * temp_output_36_0 ) ) * temp_output_121_0 ) + ( ( _Color2 * tex2D( _TextureSample7, texCoord61 ) ) * smoothstepResult83 ) ).rgb;
@@ -1928,10 +1943,12 @@ Shader "ASE/Terrain"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 
 			
+            #if ASE_SRP_VERSION >=140010
+			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+			#endif
+		
 
 			
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-           
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
@@ -1968,7 +1985,7 @@ Shader "ASE/Terrain"
 			float _Float1;
 			float _Float2;
 			float _Float13;
-			float _Float8;
+			float _Float14;
 			float _Float5;
 			float _Float7;
 			float _Float0;
@@ -2186,22 +2203,20 @@ Shader "ASE/Terrain"
 
 				float2 temp_cast_0 = (_Float1).xx;
 				float2 texCoord11 = IN.ase_texcoord2.xy * temp_cast_0 + float2( 0,0 );
-				float2 temp_cast_1 = (_Float4).xx;
-				float2 texCoord27 = IN.ase_texcoord2.xy * temp_cast_1 + float2( 0,0 );
-				float simplePerlin2D113 = snoise( texCoord27*7.7 );
+				float2 texCoord27 = IN.ase_texcoord2.xy * float2( 1,1 ) + float2( 0,0 );
+				float simplePerlin2D113 = snoise( texCoord27*_Float4 );
 				simplePerlin2D113 = simplePerlin2D113*0.5 + 0.5;
 				float smoothstepResult87 = smoothstep( 0.0 , _Float12 , simplePerlin2D113);
-				float2 temp_cast_2 = (_Float2).xx;
-				float2 texCoord22 = IN.ase_texcoord2.xy * temp_cast_2 + float2( 0,0 );
+				float2 temp_cast_1 = (_Float2).xx;
+				float2 texCoord22 = IN.ase_texcoord2.xy * temp_cast_1 + float2( 0,0 );
 				float temp_output_36_0 = ( 1.0 - smoothstepResult87 );
-				float2 temp_cast_3 = (_Float8).xx;
-				float2 texCoord66 = IN.ase_texcoord2.xy * temp_cast_3 + float2( 0,0 );
-				float simplePerlin2D114 = snoise( texCoord66*7.7 );
+				float2 texCoord123 = IN.ase_texcoord2.xy * float2( 1,1 ) + float2( 0,0 );
+				float simplePerlin2D114 = snoise( texCoord123*_Float14 );
 				simplePerlin2D114 = simplePerlin2D114*0.5 + 0.5;
 				float smoothstepResult83 = smoothstep( 0.0 , _Float13 , simplePerlin2D114);
 				float temp_output_121_0 = saturate( ( 1.0 - smoothstepResult83 ) );
-				float2 temp_cast_4 = (_Float7).xx;
-				float2 texCoord61 = IN.ase_texcoord2.xy * temp_cast_4 + float2( 0,0 );
+				float2 temp_cast_2 = (_Float7).xx;
+				float2 texCoord61 = IN.ase_texcoord2.xy * temp_cast_2 + float2( 0,0 );
 				
 
 				float3 BaseColor = ( ( ( ( ( _Color1 * tex2D( _TextureSample0, texCoord11 ) ) * smoothstepResult87 ) + ( ( _Color0 * tex2D( _TextureSample2, texCoord22 ) ) * temp_output_36_0 ) ) * temp_output_121_0 ) + ( ( _Color2 * tex2D( _TextureSample7, texCoord61 ) ) * smoothstepResult83 ) ).rgb;
@@ -2245,19 +2260,23 @@ Shader "ASE/Terrain"
 			#pragma fragment frag
 
 			
-            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
-		
 
 			
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-		
 
 			#define SHADERPASS SHADERPASS_DEPTHNORMALSONLY
 			//#define SHADERPASS SHADERPASS_DEPTHNORMALS
 
 			
+            #if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#endif
+		
 
 			
+			#if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
+			#endif
+		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -2267,10 +2286,12 @@ Shader "ASE/Terrain"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 
 			
+            #if ASE_SRP_VERSION >=140010
+			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+			#endif
+		
 
 			
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-           
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
@@ -2323,7 +2344,7 @@ Shader "ASE/Terrain"
 			float _Float1;
 			float _Float2;
 			float _Float13;
-			float _Float8;
+			float _Float14;
 			float _Float5;
 			float _Float7;
 			float _Float0;
@@ -2565,24 +2586,22 @@ Shader "ASE/Terrain"
 				float2 texCoord11 = IN.ase_texcoord5.xy * temp_cast_0 + float2( 0,0 );
 				float3 unpack14 = UnpackNormalScale( tex2D( _TextureSample1, texCoord11 ), _Float0 );
 				unpack14.z = lerp( 1, unpack14.z, saturate(_Float0) );
-				float2 temp_cast_1 = (_Float4).xx;
-				float2 texCoord27 = IN.ase_texcoord5.xy * temp_cast_1 + float2( 0,0 );
-				float simplePerlin2D113 = snoise( texCoord27*7.7 );
+				float2 texCoord27 = IN.ase_texcoord5.xy * float2( 1,1 ) + float2( 0,0 );
+				float simplePerlin2D113 = snoise( texCoord27*_Float4 );
 				simplePerlin2D113 = simplePerlin2D113*0.5 + 0.5;
 				float smoothstepResult87 = smoothstep( 0.0 , _Float12 , simplePerlin2D113);
-				float2 temp_cast_2 = (_Float2).xx;
-				float2 texCoord22 = IN.ase_texcoord5.xy * temp_cast_2 + float2( 0,0 );
+				float2 temp_cast_1 = (_Float2).xx;
+				float2 texCoord22 = IN.ase_texcoord5.xy * temp_cast_1 + float2( 0,0 );
 				float3 unpack21 = UnpackNormalScale( tex2D( _TextureSample3, texCoord22 ), _Float3 );
 				unpack21.z = lerp( 1, unpack21.z, saturate(_Float3) );
 				float temp_output_36_0 = ( 1.0 - smoothstepResult87 );
-				float2 temp_cast_3 = (_Float8).xx;
-				float2 texCoord66 = IN.ase_texcoord5.xy * temp_cast_3 + float2( 0,0 );
-				float simplePerlin2D114 = snoise( texCoord66*7.7 );
+				float2 texCoord123 = IN.ase_texcoord5.xy * float2( 1,1 ) + float2( 0,0 );
+				float simplePerlin2D114 = snoise( texCoord123*_Float14 );
 				simplePerlin2D114 = simplePerlin2D114*0.5 + 0.5;
 				float smoothstepResult83 = smoothstep( 0.0 , _Float13 , simplePerlin2D114);
 				float temp_output_121_0 = saturate( ( 1.0 - smoothstepResult83 ) );
-				float2 temp_cast_4 = (_Float7).xx;
-				float2 texCoord61 = IN.ase_texcoord5.xy * temp_cast_4 + float2( 0,0 );
+				float2 temp_cast_2 = (_Float7).xx;
+				float2 texCoord61 = IN.ase_texcoord5.xy * temp_cast_2 + float2( 0,0 );
 				float3 unpack69 = UnpackNormalScale( tex2D( _TextureSample10, texCoord61 ), _Float9 );
 				unpack69.z = lerp( 1, unpack69.z, saturate(_Float9) );
 				
@@ -2672,18 +2691,16 @@ Shader "ASE/Terrain"
 			#pragma multi_compile_fragment _ _REFLECTION_PROBE_BOX_PROJECTION
 
 			
-			#pragma multi_compile_fragment _ _SHADOWS_SOFT
-           
 
 			
+			#pragma multi_compile_fragment _ _SHADOWS_SOFT _SHADOWS_SOFT_LOW _SHADOWS_SOFT_MEDIUM _SHADOWS_SOFT_HIGH
+           
 
 			#pragma multi_compile_fragment _ _DBUFFER_MRT1 _DBUFFER_MRT2 _DBUFFER_MRT3
 			#pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
 			#pragma multi_compile_fragment _ _RENDER_PASS_ENABLED
       
 			
-            #pragma multi_compile_fragment _ _WRITE_RENDERING_LAYERS
-		
 
 			#pragma multi_compile _ LIGHTMAP_SHADOW_MIXING
 			#pragma multi_compile _ _MIXED_LIGHTING_SUBTRACTIVE
@@ -2694,8 +2711,6 @@ Shader "ASE/Terrain"
 			#pragma multi_compile_fragment _ DEBUG_DISPLAY
 
 			
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -2703,8 +2718,16 @@ Shader "ASE/Terrain"
 			#define SHADERPASS SHADERPASS_GBUFFER
 
 			
+            #if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#endif
+		
 
 			
+			#if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/RenderingLayers.hlsl"
+			#endif
+		
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Texture.hlsl"
@@ -2714,10 +2737,12 @@ Shader "ASE/Terrain"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 
 			
+            #if ASE_SRP_VERSION >=140010
+			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+			#endif
+		
 
 			
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-           
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Shadows.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
@@ -2782,7 +2807,7 @@ Shader "ASE/Terrain"
 			float _Float1;
 			float _Float2;
 			float _Float13;
-			float _Float8;
+			float _Float14;
 			float _Float5;
 			float _Float7;
 			float _Float0;
@@ -3065,22 +3090,20 @@ Shader "ASE/Terrain"
 
 				float2 temp_cast_0 = (_Float1).xx;
 				float2 texCoord11 = IN.ase_texcoord8.xy * temp_cast_0 + float2( 0,0 );
-				float2 temp_cast_1 = (_Float4).xx;
-				float2 texCoord27 = IN.ase_texcoord8.xy * temp_cast_1 + float2( 0,0 );
-				float simplePerlin2D113 = snoise( texCoord27*7.7 );
+				float2 texCoord27 = IN.ase_texcoord8.xy * float2( 1,1 ) + float2( 0,0 );
+				float simplePerlin2D113 = snoise( texCoord27*_Float4 );
 				simplePerlin2D113 = simplePerlin2D113*0.5 + 0.5;
 				float smoothstepResult87 = smoothstep( 0.0 , _Float12 , simplePerlin2D113);
-				float2 temp_cast_2 = (_Float2).xx;
-				float2 texCoord22 = IN.ase_texcoord8.xy * temp_cast_2 + float2( 0,0 );
+				float2 temp_cast_1 = (_Float2).xx;
+				float2 texCoord22 = IN.ase_texcoord8.xy * temp_cast_1 + float2( 0,0 );
 				float temp_output_36_0 = ( 1.0 - smoothstepResult87 );
-				float2 temp_cast_3 = (_Float8).xx;
-				float2 texCoord66 = IN.ase_texcoord8.xy * temp_cast_3 + float2( 0,0 );
-				float simplePerlin2D114 = snoise( texCoord66*7.7 );
+				float2 texCoord123 = IN.ase_texcoord8.xy * float2( 1,1 ) + float2( 0,0 );
+				float simplePerlin2D114 = snoise( texCoord123*_Float14 );
 				simplePerlin2D114 = simplePerlin2D114*0.5 + 0.5;
 				float smoothstepResult83 = smoothstep( 0.0 , _Float13 , simplePerlin2D114);
 				float temp_output_121_0 = saturate( ( 1.0 - smoothstepResult83 ) );
-				float2 temp_cast_4 = (_Float7).xx;
-				float2 texCoord61 = IN.ase_texcoord8.xy * temp_cast_4 + float2( 0,0 );
+				float2 temp_cast_2 = (_Float7).xx;
+				float2 texCoord61 = IN.ase_texcoord8.xy * temp_cast_2 + float2( 0,0 );
 				
 				float3 unpack14 = UnpackNormalScale( tex2D( _TextureSample1, texCoord11 ), _Float0 );
 				unpack14.z = lerp( 1, unpack14.z, saturate(_Float0) );
@@ -3217,15 +3240,14 @@ Shader "ASE/Terrain"
 			HLSLPROGRAM
 
 			
-            #define _NORMAL_DROPOFF_TS 1
-            #define ASE_FOG 1
-            #define _NORMALMAP 1
-            #define ASE_SRP_VERSION 140012
+
+			#define _NORMAL_DROPOFF_TS 1
+			#define ASE_FOG 1
+			#define _NORMALMAP 1
+			#define ASE_SRP_VERSION 140012
 
 
 			
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -3244,14 +3266,20 @@ Shader "ASE/Terrain"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 
 			
+            #if ASE_SRP_VERSION >=140010
+			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+			#endif
+		
 
 			
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-           
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
 			
+            #if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#endif
+		
 
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
@@ -3281,7 +3309,7 @@ Shader "ASE/Terrain"
 			float _Float1;
 			float _Float2;
 			float _Float13;
-			float _Float8;
+			float _Float14;
 			float _Float5;
 			float _Float7;
 			float _Float0;
@@ -3486,15 +3514,14 @@ Shader "ASE/Terrain"
 			HLSLPROGRAM
 
 			
-            #define _NORMAL_DROPOFF_TS 1
-            #define ASE_FOG 1
-            #define _NORMALMAP 1
-            #define ASE_SRP_VERSION 140012
+
+			#define _NORMAL_DROPOFF_TS 1
+			#define ASE_FOG 1
+			#define _NORMALMAP 1
+			#define ASE_SRP_VERSION 140012
 
 
 			
-            #pragma multi_compile _ DOTS_INSTANCING_ON
-		
 
 			#pragma vertex vert
 			#pragma fragment frag
@@ -3513,14 +3540,20 @@ Shader "ASE/Terrain"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/TextureStack.hlsl"
 
 			
+            #if ASE_SRP_VERSION >=140010
+			#include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
+			#endif
+		
 
 			
-			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRendering.hlsl"
-           
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
 			
+            #if ASE_SRP_VERSION >=140007
+			#include_with_pragmas "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DOTS.hlsl"
+			#endif
+		
 
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
@@ -3550,7 +3583,7 @@ Shader "ASE/Terrain"
 			float _Float1;
 			float _Float2;
 			float _Float13;
-			float _Float8;
+			float _Float14;
 			float _Float5;
 			float _Float7;
 			float _Float0;
@@ -3752,19 +3785,13 @@ Shader "ASE/Terrain"
 /*ASEBEGIN
 Version=19302
 Node;AmplifyShaderEditor.TextureCoordinatesNode;11;-1796.62,-415.2437;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.WireNode;35;-1154.435,635.1493;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;56;-1436.509,955.8689;Inherit;False;Property;_Float6;金属强度;16;0;Create;False;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;33;-1430.6,1045.721;Inherit;False;Property;_Float5;粗糙;15;0;Create;False;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode;18;-1456.472,314.2298;Inherit;True;Property;_TextureSample2;土地2;7;1;[NoScaleOffset];Create;False;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SamplerNode;21;-1455.945,522.2704;Inherit;True;Property;_TextureSample3;土地法线2;8;1;[NoScaleOffset];Create;False;0;0;0;False;0;False;14;None;None;True;0;True;bump;Auto;True;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;17;-2123.066,-356.4158;Inherit;False;Property;_Float1;土地1比例;3;0;Create;False;0;0;0;False;0;False;1;0;1;500;0;1;FLOAT;0
-Node;AmplifyShaderEditor.WireNode;43;-1121.354,673.6912;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TextureCoordinatesNode;27;-2001.778,1187.104;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SamplerNode;25;-1733.099,1166.53;Inherit;True;Property;_TextureSample4;土地1_2混合;12;1;[NoScaleOffset];Create;False;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.TextureCoordinatesNode;22;-1947.775,439.1023;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;24;-2016.081,603.2948;Inherit;False;Property;_Float3;土地2法线强度;11;0;Create;False;0;0;0;False;0;False;1;1;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode;54;-1495.816,725.5993;Inherit;True;Property;_TextureSample6;土地遮罩2;9;1;[NoScaleOffset];Create;False;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;26;-2299.936,1209.695;Inherit;False;Property;_Float4;土地1_2混合比例;13;0;Create;False;0;0;0;False;0;False;1;0;1;100;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;88;-1748.965,1378.083;Inherit;False;Property;_Float12;土地1_2混合强度;14;0;Create;False;0;0;0;False;0;False;0.7652174;0;0.1;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;63;-1518.437,2028.164;Inherit;False;Property;_Float7;草地比例;17;0;Create;False;0;0;0;False;0;False;1;0;1;500;0;1;FLOAT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;61;-1205.466,2004.379;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -3801,26 +3828,35 @@ Node;AmplifyShaderEditor.SamplerNode;14;-1462.884,-284.3482;Inherit;True;Propert
 Node;AmplifyShaderEditor.SamplerNode;46;-1470.621,-55.54045;Inherit;True;Property;_TextureSample5;土地1遮罩;4;1;[NoScaleOffset];Create;False;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;16;-1858.788,-228.4653;Inherit;False;Property;_Float0;土地1法线强度;5;0;Create;False;0;0;0;False;0;False;1;1;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SmoothstepOpNode;87;-1397.737,1243.521;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1.02;False;1;FLOAT;0
-Node;AmplifyShaderEditor.WireNode;37;-1093.904,1300.059;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;77;930.6175,2164.89;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;118;759.2067,2099.285;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;117;744.233,2290.951;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SmoothstepOpNode;83;-404.6876,2916.929;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1.02;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;120;1066.977,1924.191;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;72;267.1053,2570.917;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.OneMinusNode;115;87.83914,2831.406;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SaturateNode;121;340.5629,2793.984;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;79;948.7422,2321.732;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;67;-1454.647,2863.021;Inherit;False;Property;_Float8;草地分布比例;26;0;Create;False;0;0;0;False;0;False;39.17263;0;0;500;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;119;753.7905,1897.586;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;65;312.9504,2111.693;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;71;275.6924,2236.463;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;73;265.6091,2403.053;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;89;188.9014,425.0257;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;116;751.703,2503.334;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;92;993.5667,2555.352;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.NoiseGeneratorNode;114;-856.9461,3177.19;Inherit;True;Simplex2D;True;False;2;0;FLOAT2;0,0;False;1;FLOAT;7.7;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;86;-870.0831,3022.248;Inherit;False;Property;_Float13;草地分布平滑;27;0;Create;False;0;0;0;False;0;False;1;0;0.1;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;67;-1454.647,2863.021;Inherit;False;Property;_Float8;草地缩放;26;0;Create;False;0;0;0;False;0;False;39.17263;0;0;500;0;1;FLOAT;0
+Node;AmplifyShaderEditor.TextureCoordinatesNode;123;-1204.467,3063.018;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;122;-1458.467,3206.018;Inherit;False;Property;_Float14;草地分布;28;0;Create;False;0;0;0;False;0;False;5;0;1;50;0;1;FLOAT;0
+Node;AmplifyShaderEditor.NoiseGeneratorNode;114;-869.9461,3118.19;Inherit;True;Simplex2D;True;False;2;0;FLOAT2;0,0;False;1;FLOAT;1.54;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SmoothstepOpNode;83;-471.6818,3043.929;Inherit;False;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1.02;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;71;300.6924,2240.463;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;124;-451.6136,2788.177;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.WireNode;37;-819.7673,1332.101;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.WireNode;35;-958.5366,635.1493;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.WireNode;43;-945.5181,676.0515;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.TextureCoordinatesNode;27;-2051.778,954.104;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;26;-2278.936,1209.695;Inherit;False;Property;_Float4;土地1_2混合比例;13;0;Create;False;0;0;0;False;0;False;1;0;1;100;0;1;FLOAT;0
+Node;AmplifyShaderEditor.TextureCoordinatesNode;22;-1836.775,457.1023;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;24;-1870.081,603.2948;Inherit;False;Property;_Float3;土地2法线强度;11;0;Create;False;0;0;0;False;0;False;1;1;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1;1598.18,2094.307;Float;False;True;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;ASE/Terrain;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;21;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;True;1;1;False;;0;False;;1;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalForward;False;False;0;;0;0;Standard;39;Workflow;1;0;Surface;0;0;  Refraction Model;0;0;  Blend;0;0;Two Sided;1;0;Fragment Normal Space,InvertActionOnDeselection;0;0;Forward Only;0;0;Transmission;0;0;  Transmission Shadow;0.5,False,;0;Translucency;0;0;  Translucency Strength;1,False,;0;  Normal Distortion;0.5,False,;0;  Scattering;2,False,;0;  Direct;0.9,False,;0;  Ambient;0.1,False,;0;  Shadow;0.5,False,;0;Cast Shadows;1;0;  Use Shadow Threshold;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;_FinalColorxAlpha;0;0;Meta Pass;1;0;Override Baked GI;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position,InvertActionOnDeselection;1;0;Debug Display;0;0;Clear Coat;0;0;0;10;False;True;True;True;True;True;True;True;True;True;False;;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;0;-261.7343,-370.3505;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ExtraPrePass;0;0;ExtraPrePass;5;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;0;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;2;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
@@ -3832,14 +3868,10 @@ Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;7;0,0;Float;False;False;-1;
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;8;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;SceneSelectionPass;0;8;SceneSelectionPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=SceneSelectionPass;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;9;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ScenePickingPass;0;9;ScenePickingPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Picking;False;False;0;;0;0;Standard;0;False;0
 WireConnection;11;0;17;0
-WireConnection;35;0;87;0
 WireConnection;18;1;22;0
 WireConnection;21;1;22;0
 WireConnection;21;5;24;0
-WireConnection;43;0;87;0
-WireConnection;27;0;26;0
 WireConnection;25;1;27;0
-WireConnection;22;0;23;0
 WireConnection;54;1;22;0
 WireConnection;61;0;63;0
 WireConnection;66;0;67;0
@@ -3883,20 +3915,18 @@ WireConnection;96;1;10;0
 WireConnection;108;0;107;0
 WireConnection;108;1;59;0
 WireConnection;113;0;27;0
+WireConnection;113;1;26;0
 WireConnection;14;1;11;0
 WireConnection;14;5;16;0
 WireConnection;46;1;11;0
 WireConnection;87;0;113;0
 WireConnection;87;2;88;0
-WireConnection;37;0;87;0
 WireConnection;77;0;118;0
 WireConnection;77;1;71;0
 WireConnection;118;0;51;0
 WireConnection;118;1;121;0
 WireConnection;117;0;58;0
 WireConnection;117;1;121;0
-WireConnection;83;0;114;0
-WireConnection;83;2;86;0
 WireConnection;120;0;119;0
 WireConnection;120;1;65;0
 WireConnection;72;0;69;0
@@ -3909,9 +3939,6 @@ WireConnection;119;0;39;0
 WireConnection;119;1;121;0
 WireConnection;65;0;108;0
 WireConnection;65;1;83;0
-WireConnection;71;0;68;2
-WireConnection;71;1;74;0
-WireConnection;71;2;83;0
 WireConnection;73;0;68;4
 WireConnection;73;1;75;0
 WireConnection;73;2;83;0
@@ -3921,10 +3948,21 @@ WireConnection;116;0;89;0
 WireConnection;116;1;121;0
 WireConnection;92;0;116;0
 WireConnection;92;1;72;0
-WireConnection;114;0;66;0
+WireConnection;114;0;123;0
+WireConnection;114;1;122;0
+WireConnection;83;0;114;0
+WireConnection;83;2;86;0
+WireConnection;71;0;68;2
+WireConnection;71;1;74;0
+WireConnection;71;2;83;0
+WireConnection;124;1;64;0
+WireConnection;37;0;87;0
+WireConnection;35;0;87;0
+WireConnection;43;0;87;0
+WireConnection;22;0;23;0
 WireConnection;1;0;120;0
 WireConnection;1;1;92;0
 WireConnection;1;3;77;0
 WireConnection;1;4;79;0
 ASEEND*/
-//CHKSM=0C923D516969E4FB4A5E7D46DD4BBD1924348273
+//CHKSM=E33FA0FBAE9C96E066C997686A3AE557F31269BD
