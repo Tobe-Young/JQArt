@@ -179,7 +179,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u5E02\u573A"
+  m_text: "\u5927\u4E16\u754C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc0e76a184ee1a44990e2f5e19d6003a, type: 2}
   m_sharedMaterial: {fileID: 2941542199951490119, guid: cc0e76a184ee1a44990e2f5e19d6003a, type: 2}
@@ -386,13 +386,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 89768879}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.3482448, z: 0, w: 0.9374037}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 40.76, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &106606511
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -846,7 +846,7 @@ GameObject:
   - component: {fileID: 371374147}
   - component: {fileID: 371374146}
   m_Layer: 5
-  m_Name: MiniGameEntryBtn
+  m_Name: MiniGameAndOutputEntryBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -859,17 +859,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 371374144}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: -2.287}
+  m_LocalRotation: {x: -0, y: 0.20914535, z: -0, w: 0.9778846}
+  m_LocalPosition: {x: 0, y: 0, z: 1.686}
   m_LocalScale: {x: 0.01, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1758371719}
   m_Father: {fileID: 1385533691}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 24.145, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.732, y: 1.217}
+  m_AnchoredPosition: {x: 1.301, y: 1.624}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &371374146
@@ -1252,7 +1252,7 @@ GameObject:
   - component: {fileID: 599880941}
   - component: {fileID: 599880940}
   m_Layer: 5
-  m_Name: MarketBtn
+  m_Name: BigWorldEntryBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1265,18 +1265,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 599880938}
-  m_LocalRotation: {x: 0, y: 0.23583092, z: 0, w: 0.9717941}
-  m_LocalPosition: {x: 0, y: 0, z: 1.761}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -2.428}
   m_LocalScale: {x: 0.01, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 19624412}
   m_Father: {fileID: 1385533691}
-  m_LocalEulerAnglesHint: {x: 0, y: 33.01, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.367, y: 1.67}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 1.732, y: 2.365}
+  m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &599880940
 MonoBehaviour:
@@ -7426,7 +7426,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u5C0F\u6E38\u620F"
+  m_text: "\u5C0F\u6E38\u620F\u4E0E\u4EA7\u51FA"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc0e76a184ee1a44990e2f5e19d6003a, type: 2}
   m_sharedMaterial: {fileID: 2941542199951490119, guid: cc0e76a184ee1a44990e2f5e19d6003a, type: 2}
