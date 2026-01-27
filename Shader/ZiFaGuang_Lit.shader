@@ -600,7 +600,7 @@ Shader "ASE/ZiFaGuang_Lit"
 				float2 panner53 = ( 1.0 * _Time.y * appendResult55 + texCoord49);
 				float2 appendResult52 = (float2(( texCoord49.x + tex2D( _TextureSample5, panner53 ).r ) , texCoord49.y));
 				#ifdef _KEYWORD0_ON
-				float4 staticSwitch32 = ( tex2D( _TextureSample3, uv_TextureSample320 ) * tex2D( _TextureSample4, (( _ToggleSwitch0 )?( appendResult52 ):( texCoord24 )) ).g * _Color0 * _Vector1.w * (0.2 + (saturate( _TimeParameters.z ) - 0.0) * (2.0 - 0.2) / (1.0 - 0.0)) );
+				float4 staticSwitch32 = ( tex2D( _TextureSample3, uv_TextureSample320 ) * tex2D( _TextureSample4, (( _ToggleSwitch0 )?( appendResult52 ):( texCoord24 )) ).g * _Color0 * _Vector1.w * (0.4 + (saturate( _TimeParameters.z ) - 0.0) * (2.0 - 0.4) / (1.0 - 0.0)) );
 				#else
 				float4 staticSwitch32 = float4( 0,0,0,0 );
 				#endif
@@ -1777,7 +1777,7 @@ Shader "ASE/ZiFaGuang_Lit"
 				float2 panner53 = ( 1.0 * _Time.y * appendResult55 + texCoord49);
 				float2 appendResult52 = (float2(( texCoord49.x + tex2D( _TextureSample5, panner53 ).r ) , texCoord49.y));
 				#ifdef _KEYWORD0_ON
-				float4 staticSwitch32 = ( tex2D( _TextureSample3, uv_TextureSample320 ) * tex2D( _TextureSample4, (( _ToggleSwitch0 )?( appendResult52 ):( texCoord24 )) ).g * _Color0 * _Vector1.w * (0.2 + (saturate( _TimeParameters.z ) - 0.0) * (2.0 - 0.2) / (1.0 - 0.0)) );
+				float4 staticSwitch32 = ( tex2D( _TextureSample3, uv_TextureSample320 ) * tex2D( _TextureSample4, (( _ToggleSwitch0 )?( appendResult52 ):( texCoord24 )) ).g * _Color0 * _Vector1.w * (0.4 + (saturate( _TimeParameters.z ) - 0.0) * (2.0 - 0.4) / (1.0 - 0.0)) );
 				#else
 				float4 staticSwitch32 = float4( 0,0,0,0 );
 				#endif
@@ -2851,7 +2851,7 @@ Shader "ASE/ZiFaGuang_Lit"
 				float2 panner53 = ( 1.0 * _Time.y * appendResult55 + texCoord49);
 				float2 appendResult52 = (float2(( texCoord49.x + tex2D( _TextureSample5, panner53 ).r ) , texCoord49.y));
 				#ifdef _KEYWORD0_ON
-				float4 staticSwitch32 = ( tex2D( _TextureSample3, uv_TextureSample320 ) * tex2D( _TextureSample4, (( _ToggleSwitch0 )?( appendResult52 ):( texCoord24 )) ).g * _Color0 * _Vector1.w * (0.2 + (saturate( _TimeParameters.z ) - 0.0) * (2.0 - 0.2) / (1.0 - 0.0)) );
+				float4 staticSwitch32 = ( tex2D( _TextureSample3, uv_TextureSample320 ) * tex2D( _TextureSample4, (( _ToggleSwitch0 )?( appendResult52 ):( texCoord24 )) ).g * _Color0 * _Vector1.w * (0.4 + (saturate( _TimeParameters.z ) - 0.0) * (2.0 - 0.4) / (1.0 - 0.0)) );
 				#else
 				float4 staticSwitch32 = float4( 0,0,0,0 );
 				#endif
@@ -3524,7 +3524,6 @@ Node;AmplifyShaderEditor.WireNode;19;43.51174,309.1556;Inherit;False;1;0;FLOAT3;
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;22;-176.5173,870.3193;Inherit;False;5;5;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;2;COLOR;0,0,0,0;False;3;FLOAT;0;False;4;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.ColorNode;31;-610.1615,986.7;Inherit;False;Property;_Color0;曝光;7;1;[HDR];Create;False;0;0;0;False;0;False;0,0,0,0;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.StaticSwitch;32;64.606,661.8456;Inherit;False;Property;_Keyword0;自发光;6;0;Create;False;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;COLOR;0,0,0,0;False;0;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;4;COLOR;0,0,0,0;False;5;COLOR;0,0,0,0;False;6;COLOR;0,0,0,0;False;7;COLOR;0,0,0,0;False;8;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.Vector4Node;28;-2053.023,1033.981;Inherit;False;Property;_Vector1;X_Y_速度_强度;10;0;Create;False;0;0;0;False;0;False;0.39,0,1,1;0,0,0,0;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.DynamicAppendNode;29;-1825.975,957.8235;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.SimpleTimeNode;25;-1829.444,1087.577;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;30;-1586.959,955.1975;Inherit;True;2;2;0;FLOAT2;0,0;False;1;FLOAT;0;False;1;FLOAT2;0
@@ -3541,9 +3540,11 @@ Node;AmplifyShaderEditor.DynamicAppendNode;55;-2133.24,631.1608;Inherit;False;FL
 Node;AmplifyShaderEditor.RangedFloatNode;54;-2313.156,642.4173;Inherit;False;Property;_Float3;扰动速度;14;0;Create;False;0;0;0;False;0;False;0.12;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.WireNode;48;-291.0783,1146.21;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.CosTime;36;-960.4744,1331.135;Inherit;False;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.TFHCRemapNode;42;-524.0955,1319.91;Inherit;True;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0.2;False;4;FLOAT;2;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SaturateNode;43;-750.5157,1381.673;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.ToggleSwitchNode;61;-921.1635,804.8745;Inherit;False;Property;_ToggleSwitch0;流动扰动;12;0;Create;False;0;0;0;False;0;False;0;True;2;0;FLOAT2;0,0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.WireNode;62;-1924.722,1191.378;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.Vector4Node;28;-2150.03,963.5509;Inherit;False;Property;_Vector1;X_Y_速度_强度;10;0;Create;False;0;0;0;False;0;False;0.39,0,1,1;0,0,0,0;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.TFHCRemapNode;42;-540.0955,1332.91;Inherit;True;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0.4;False;4;FLOAT;2;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;0;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ExtraPrePass;0;0;ExtraPrePass;5;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;0;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;2;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;3;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;True;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;True;1;LightMode=DepthOnly;False;False;0;;0;0;Standard;0;False;0
@@ -3585,15 +3586,16 @@ WireConnection;53;0;49;0
 WireConnection;53;2;55;0
 WireConnection;55;0;54;0
 WireConnection;55;1;54;0
-WireConnection;48;0;28;4
-WireConnection;42;0;43;0
+WireConnection;48;0;62;0
 WireConnection;43;0;36;4
 WireConnection;61;0;24;0
 WireConnection;61;1;52;0
+WireConnection;62;0;28;4
+WireConnection;42;0;43;0
 WireConnection;1;0;10;0
 WireConnection;1;1;19;0
 WireConnection;1;2;32;0
 WireConnection;1;3;13;0
 WireConnection;1;4;15;0
 ASEEND*/
-//CHKSM=0BC1455D6B2E21225BDDBDFDD3ACE7073E4E3B84
+//CHKSM=A1EB1218F22B39EF9AD76A217C8514A0BB7AF4C3
