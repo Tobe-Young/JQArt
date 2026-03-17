@@ -13,16 +13,19 @@ Shader "ASE/XiaoRong"
 		_Float1("乘粗糙", Range( 0 , 1)) = 0
 		[NoScaleOffset][Normal]_TextureSample2("法线", 2D) = "bump" {}
 		_Float2("法线强度", Range( 0 , 1)) = 0
+		[KeywordEnum(Noise,XYZ,UV)] _Keyword4("溶解方式", Float) = 0
 		[NoScaleOffset]_TextureSample3("遮罩", 2D) = "white" {}
 		_Float3("溶解", Range( 0 , 1)) = 0
-		_Float4("硬边", Float) = 0.02
+		_Float4("光边宽度", Float) = 0.02
 		[HDR]_Color1("光边颜色", Color) = (0,1,0.3174081,0)
-		[Toggle(_KEYWORD0_ON)] _Keyword0("轴向溶解", Float) = 0
-		[Toggle(_KEYWORD3_ON)] _Keyword3("反向", Float) = 0
+		[Toggle(_KEYWORD3_ON)] _Keyword3("轴向翻转", Float) = 0
 		[KeywordEnum(X,Y,Z)] _Keyword1("轴向", Float) = 0
 		_Float5("轴向溶解", Range( 0 , 1)) = 1
 		[HDR]_Color2("轴向颜色", Color) = (5.340313,0,0,0)
-		_Vector1("范围XY光变宽度ZW", Vector) = (-0.5,1.7,0.5,0.51)
+		_Vector1("范围XY光边宽度ZW", Vector) = (-0.5,1.7,0.5,0.51)
+		_Float6("UV溶解", Range( 0 , 1)) = 0.599584
+		[Toggle(_KEYWORD6_ON)] _Keyword6("XY方向翻转", Float) = 1
+		[Toggle(_KEYWORD5_ON)] _Keyword5("UV反向", Float) = 0
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
 
@@ -293,8 +296,10 @@ Shader "ASE/XiaoRong"
 
 			#define ASE_NEEDS_FRAG_POSITION
 			#pragma shader_feature_local _KEYWORD1_X _KEYWORD1_Y _KEYWORD1_Z
-			#pragma shader_feature_local _KEYWORD0_ON
+			#pragma shader_feature_local _KEYWORD6_ON
+			#pragma shader_feature_local _KEYWORD4_NOISE _KEYWORD4_XYZ _KEYWORD4_UV
 			#pragma shader_feature_local _KEYWORD3_ON
+			#pragma shader_feature_local _KEYWORD5_ON
 
 
 			#if defined(ASE_EARLY_Z_DEPTH_OPTIMIZE) && (SHADER_TARGET >= 45)
@@ -347,6 +352,7 @@ Shader "ASE/XiaoRong"
 			float _Float3;
 			float _Float4;
 			float _Float5;
+			float _Float6;
 			float _Float0;
 			float _Float1;
 			#ifdef ASE_TRANSMISSION
@@ -395,9 +401,7 @@ Shader "ASE/XiaoRong"
 
 				o.ase_texcoord8.xy = v.texcoord.xy;
 				o.ase_texcoord9 = v.positionOS;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord8.zw = 0;
+				o.ase_texcoord8.zw = v.texcoord1.xy;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.positionOS.xyz;
@@ -607,18 +611,26 @@ Shader "ASE/XiaoRong"
 				float temp_output_28_0 = ( temp_output_27_0 - step( temp_output_32_0 , tex2DNode22.r ) );
 				float4 lerpResult31 = lerp( temp_output_12_0 , ( temp_output_28_0 * _Color1 ) , temp_output_28_0);
 				#if defined(_KEYWORD1_X)
-				float staticSwitch68 = IN.ase_texcoord9.x;
+				float staticSwitch68 = IN.ase_texcoord9.xyz.x;
 				#elif defined(_KEYWORD1_Y)
-				float staticSwitch68 = IN.ase_texcoord9.y;
+				float staticSwitch68 = IN.ase_texcoord9.xyz.y;
 				#elif defined(_KEYWORD1_Z)
-				float staticSwitch68 = IN.ase_texcoord9.z;
+				float staticSwitch68 = IN.ase_texcoord9.xyz.z;
 				#else
-				float staticSwitch68 = IN.ase_texcoord9.x;
+				float staticSwitch68 = IN.ase_texcoord9.xyz.x;
 				#endif
 				float temp_output_35_0 = ( staticSwitch68 + (_Vector1.x + (_Float5 - 0.0) * (_Vector1.y - _Vector1.x) / (1.0 - 0.0)) );
 				float temp_output_38_0 = step( temp_output_35_0 , _Vector1.w );
 				float temp_output_36_0 = step( temp_output_35_0 , _Vector1.z );
-				float4 lerpResult54 = lerp( lerpResult31 , ( ( saturate( temp_output_38_0 ) - temp_output_36_0 ) * _Color2 ) , 0.5);
+				float2 texCoord107 = IN.ase_texcoord8.zw * float2( 1,1 ) + float2( 0,0 );
+				#ifdef _KEYWORD6_ON
+				float staticSwitch133 = texCoord107.y;
+				#else
+				float staticSwitch133 = texCoord107.x;
+				#endif
+				float temp_output_114_0 = (-0.02 + (_Float6 - 0.0) * (1.02 - -0.02) / (1.0 - 0.0));
+				float temp_output_108_0 = step( staticSwitch133 , temp_output_114_0 );
+				float temp_output_110_0 = step( ( staticSwitch133 + 0.01 ) , temp_output_114_0 );
 				
 				float2 uv_TextureSample113 = IN.ase_texcoord8.xy;
 				float4 tex2DNode13 = tex2D( _TextureSample1, uv_TextureSample113 );
@@ -629,21 +641,30 @@ Shader "ASE/XiaoRong"
 				#else
 				float staticSwitch91 = saturate( temp_output_38_0 );
 				#endif
-				#ifdef _KEYWORD0_ON
-				float staticSwitch57 = ( temp_output_27_0 * staticSwitch91 );
+				#ifdef _KEYWORD5_ON
+				float staticSwitch132 = saturate( ( 1.0 - temp_output_110_0 ) );
 				#else
-				float staticSwitch57 = temp_output_27_0;
+				float staticSwitch132 = temp_output_108_0;
+				#endif
+				#if defined(_KEYWORD4_NOISE)
+				float staticSwitch124 = temp_output_27_0;
+				#elif defined(_KEYWORD4_XYZ)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch91 );
+				#elif defined(_KEYWORD4_UV)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch132 );
+				#else
+				float staticSwitch124 = temp_output_27_0;
 				#endif
 				
 
 				float3 BaseColor = temp_output_12_0.rgb;
 				float3 Normal = unpack20;
-				float3 Emission = lerpResult54.rgb;
+				float3 Emission = ( lerpResult31 + ( ( saturate( temp_output_38_0 ) - temp_output_36_0 ) * _Color2 ) + ( _Color1 * ( temp_output_108_0 - temp_output_110_0 ) ) ).rgb;
 				float3 Specular = 0.5;
 				float Metallic = ( appendResult19 * _Float0 ).x;
 				float Smoothness = ( tex2DNode13.a * _Float1 );
 				float Occlusion = 1;
-				float Alpha = staticSwitch57;
+				float Alpha = staticSwitch124;
 				float AlphaClipThreshold = 0.5;
 				float AlphaClipThresholdShadow = 0.5;
 				float3 BakedGI = 0;
@@ -937,9 +958,11 @@ Shader "ASE/XiaoRong"
             #endif
 
 			#define ASE_NEEDS_FRAG_POSITION
-			#pragma shader_feature_local _KEYWORD0_ON
+			#pragma shader_feature_local _KEYWORD4_NOISE _KEYWORD4_XYZ _KEYWORD4_UV
 			#pragma shader_feature_local _KEYWORD3_ON
 			#pragma shader_feature_local _KEYWORD1_X _KEYWORD1_Y _KEYWORD1_Z
+			#pragma shader_feature_local _KEYWORD5_ON
+			#pragma shader_feature_local _KEYWORD6_ON
 
 
 			#if defined(ASE_EARLY_Z_DEPTH_OPTIMIZE) && (SHADER_TARGET >= 45)
@@ -955,6 +978,7 @@ Shader "ASE/XiaoRong"
 				float4 positionOS : POSITION;
 				float3 normalOS : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -983,6 +1007,7 @@ Shader "ASE/XiaoRong"
 			float _Float3;
 			float _Float4;
 			float _Float5;
+			float _Float6;
 			float _Float0;
 			float _Float1;
 			#ifdef ASE_TRANSMISSION
@@ -1031,9 +1056,7 @@ Shader "ASE/XiaoRong"
 
 				o.ase_texcoord3.xy = v.ase_texcoord.xy;
 				o.ase_texcoord4 = v.positionOS;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord3.zw = 0;
+				o.ase_texcoord3.zw = v.ase_texcoord1.xy;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.positionOS.xyz;
@@ -1090,6 +1113,7 @@ Shader "ASE/XiaoRong"
 				float4 vertex : INTERNALTESSPOS;
 				float3 normalOS : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
 
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -1108,6 +1132,7 @@ Shader "ASE/XiaoRong"
 				o.vertex = v.positionOS;
 				o.normalOS = v.normalOS;
 				o.ase_texcoord = v.ase_texcoord;
+				o.ase_texcoord1 = v.ase_texcoord1;
 				return o;
 			}
 
@@ -1147,6 +1172,7 @@ Shader "ASE/XiaoRong"
 				o.positionOS = patch[0].vertex * bary.x + patch[1].vertex * bary.y + patch[2].vertex * bary.z;
 				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
 				o.ase_texcoord = patch[0].ase_texcoord * bary.x + patch[1].ase_texcoord * bary.y + patch[2].ase_texcoord * bary.z;
+				o.ase_texcoord1 = patch[0].ase_texcoord1 * bary.x + patch[1].ase_texcoord1 * bary.y + patch[2].ase_texcoord1 * bary.z;
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
 				for (int i = 0; i < 3; ++i)
@@ -1194,13 +1220,13 @@ Shader "ASE/XiaoRong"
 				float4 tex2DNode22 = tex2D( _TextureSample3, uv_TextureSample322 );
 				float temp_output_27_0 = step( temp_output_32_0 , ( tex2DNode22.r + _Float4 ) );
 				#if defined(_KEYWORD1_X)
-				float staticSwitch68 = IN.ase_texcoord4.x;
+				float staticSwitch68 = IN.ase_texcoord4.xyz.x;
 				#elif defined(_KEYWORD1_Y)
-				float staticSwitch68 = IN.ase_texcoord4.y;
+				float staticSwitch68 = IN.ase_texcoord4.xyz.y;
 				#elif defined(_KEYWORD1_Z)
-				float staticSwitch68 = IN.ase_texcoord4.z;
+				float staticSwitch68 = IN.ase_texcoord4.xyz.z;
 				#else
-				float staticSwitch68 = IN.ase_texcoord4.x;
+				float staticSwitch68 = IN.ase_texcoord4.xyz.x;
 				#endif
 				float temp_output_35_0 = ( staticSwitch68 + (_Vector1.x + (_Float5 - 0.0) * (_Vector1.y - _Vector1.x) / (1.0 - 0.0)) );
 				float temp_output_38_0 = step( temp_output_35_0 , _Vector1.w );
@@ -1210,14 +1236,32 @@ Shader "ASE/XiaoRong"
 				#else
 				float staticSwitch91 = saturate( temp_output_38_0 );
 				#endif
-				#ifdef _KEYWORD0_ON
-				float staticSwitch57 = ( temp_output_27_0 * staticSwitch91 );
+				float2 texCoord107 = IN.ase_texcoord3.zw * float2( 1,1 ) + float2( 0,0 );
+				#ifdef _KEYWORD6_ON
+				float staticSwitch133 = texCoord107.y;
 				#else
-				float staticSwitch57 = temp_output_27_0;
+				float staticSwitch133 = texCoord107.x;
+				#endif
+				float temp_output_114_0 = (-0.02 + (_Float6 - 0.0) * (1.02 - -0.02) / (1.0 - 0.0));
+				float temp_output_108_0 = step( staticSwitch133 , temp_output_114_0 );
+				float temp_output_110_0 = step( ( staticSwitch133 + 0.01 ) , temp_output_114_0 );
+				#ifdef _KEYWORD5_ON
+				float staticSwitch132 = saturate( ( 1.0 - temp_output_110_0 ) );
+				#else
+				float staticSwitch132 = temp_output_108_0;
+				#endif
+				#if defined(_KEYWORD4_NOISE)
+				float staticSwitch124 = temp_output_27_0;
+				#elif defined(_KEYWORD4_XYZ)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch91 );
+				#elif defined(_KEYWORD4_UV)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch132 );
+				#else
+				float staticSwitch124 = temp_output_27_0;
 				#endif
 				
 
-				float Alpha = staticSwitch57;
+				float Alpha = staticSwitch124;
 				float AlphaClipThreshold = 0.5;
 				float AlphaClipThresholdShadow = 0.5;
 
@@ -1307,9 +1351,11 @@ Shader "ASE/XiaoRong"
             #endif
 
 			#define ASE_NEEDS_FRAG_POSITION
-			#pragma shader_feature_local _KEYWORD0_ON
+			#pragma shader_feature_local _KEYWORD4_NOISE _KEYWORD4_XYZ _KEYWORD4_UV
 			#pragma shader_feature_local _KEYWORD3_ON
 			#pragma shader_feature_local _KEYWORD1_X _KEYWORD1_Y _KEYWORD1_Z
+			#pragma shader_feature_local _KEYWORD5_ON
+			#pragma shader_feature_local _KEYWORD6_ON
 
 
 			#if defined(ASE_EARLY_Z_DEPTH_OPTIMIZE) && (SHADER_TARGET >= 45)
@@ -1325,6 +1371,7 @@ Shader "ASE/XiaoRong"
 				float4 positionOS : POSITION;
 				float3 normalOS : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -1353,6 +1400,7 @@ Shader "ASE/XiaoRong"
 			float _Float3;
 			float _Float4;
 			float _Float5;
+			float _Float6;
 			float _Float0;
 			float _Float1;
 			#ifdef ASE_TRANSMISSION
@@ -1398,9 +1446,7 @@ Shader "ASE/XiaoRong"
 
 				o.ase_texcoord3.xy = v.ase_texcoord.xy;
 				o.ase_texcoord4 = v.positionOS;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord3.zw = 0;
+				o.ase_texcoord3.zw = v.ase_texcoord1.xy;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.positionOS.xyz;
@@ -1439,6 +1485,7 @@ Shader "ASE/XiaoRong"
 				float4 vertex : INTERNALTESSPOS;
 				float3 normalOS : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
 
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -1457,6 +1504,7 @@ Shader "ASE/XiaoRong"
 				o.vertex = v.positionOS;
 				o.normalOS = v.normalOS;
 				o.ase_texcoord = v.ase_texcoord;
+				o.ase_texcoord1 = v.ase_texcoord1;
 				return o;
 			}
 
@@ -1496,6 +1544,7 @@ Shader "ASE/XiaoRong"
 				o.positionOS = patch[0].vertex * bary.x + patch[1].vertex * bary.y + patch[2].vertex * bary.z;
 				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
 				o.ase_texcoord = patch[0].ase_texcoord * bary.x + patch[1].ase_texcoord * bary.y + patch[2].ase_texcoord * bary.z;
+				o.ase_texcoord1 = patch[0].ase_texcoord1 * bary.x + patch[1].ase_texcoord1 * bary.y + patch[2].ase_texcoord1 * bary.z;
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
 				for (int i = 0; i < 3; ++i)
@@ -1543,13 +1592,13 @@ Shader "ASE/XiaoRong"
 				float4 tex2DNode22 = tex2D( _TextureSample3, uv_TextureSample322 );
 				float temp_output_27_0 = step( temp_output_32_0 , ( tex2DNode22.r + _Float4 ) );
 				#if defined(_KEYWORD1_X)
-				float staticSwitch68 = IN.ase_texcoord4.x;
+				float staticSwitch68 = IN.ase_texcoord4.xyz.x;
 				#elif defined(_KEYWORD1_Y)
-				float staticSwitch68 = IN.ase_texcoord4.y;
+				float staticSwitch68 = IN.ase_texcoord4.xyz.y;
 				#elif defined(_KEYWORD1_Z)
-				float staticSwitch68 = IN.ase_texcoord4.z;
+				float staticSwitch68 = IN.ase_texcoord4.xyz.z;
 				#else
-				float staticSwitch68 = IN.ase_texcoord4.x;
+				float staticSwitch68 = IN.ase_texcoord4.xyz.x;
 				#endif
 				float temp_output_35_0 = ( staticSwitch68 + (_Vector1.x + (_Float5 - 0.0) * (_Vector1.y - _Vector1.x) / (1.0 - 0.0)) );
 				float temp_output_38_0 = step( temp_output_35_0 , _Vector1.w );
@@ -1559,14 +1608,32 @@ Shader "ASE/XiaoRong"
 				#else
 				float staticSwitch91 = saturate( temp_output_38_0 );
 				#endif
-				#ifdef _KEYWORD0_ON
-				float staticSwitch57 = ( temp_output_27_0 * staticSwitch91 );
+				float2 texCoord107 = IN.ase_texcoord3.zw * float2( 1,1 ) + float2( 0,0 );
+				#ifdef _KEYWORD6_ON
+				float staticSwitch133 = texCoord107.y;
 				#else
-				float staticSwitch57 = temp_output_27_0;
+				float staticSwitch133 = texCoord107.x;
+				#endif
+				float temp_output_114_0 = (-0.02 + (_Float6 - 0.0) * (1.02 - -0.02) / (1.0 - 0.0));
+				float temp_output_108_0 = step( staticSwitch133 , temp_output_114_0 );
+				float temp_output_110_0 = step( ( staticSwitch133 + 0.01 ) , temp_output_114_0 );
+				#ifdef _KEYWORD5_ON
+				float staticSwitch132 = saturate( ( 1.0 - temp_output_110_0 ) );
+				#else
+				float staticSwitch132 = temp_output_108_0;
+				#endif
+				#if defined(_KEYWORD4_NOISE)
+				float staticSwitch124 = temp_output_27_0;
+				#elif defined(_KEYWORD4_XYZ)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch91 );
+				#elif defined(_KEYWORD4_UV)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch132 );
+				#else
+				float staticSwitch124 = temp_output_27_0;
 				#endif
 				
 
-				float Alpha = staticSwitch57;
+				float Alpha = staticSwitch124;
 				float AlphaClipThreshold = 0.5;
 
 				#ifdef ASE_DEPTH_WRITE_ON
@@ -1637,8 +1704,10 @@ Shader "ASE/XiaoRong"
 
 			#define ASE_NEEDS_FRAG_POSITION
 			#pragma shader_feature_local _KEYWORD1_X _KEYWORD1_Y _KEYWORD1_Z
-			#pragma shader_feature_local _KEYWORD0_ON
+			#pragma shader_feature_local _KEYWORD6_ON
+			#pragma shader_feature_local _KEYWORD4_NOISE _KEYWORD4_XYZ _KEYWORD4_UV
 			#pragma shader_feature_local _KEYWORD3_ON
+			#pragma shader_feature_local _KEYWORD5_ON
 
 
 			struct VertexInput
@@ -1680,6 +1749,7 @@ Shader "ASE/XiaoRong"
 			float _Float3;
 			float _Float4;
 			float _Float5;
+			float _Float6;
 			float _Float0;
 			float _Float1;
 			#ifdef ASE_TRANSMISSION
@@ -1726,9 +1796,7 @@ Shader "ASE/XiaoRong"
 
 				o.ase_texcoord4.xy = v.texcoord0.xy;
 				o.ase_texcoord5 = v.positionOS;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord4.zw = 0;
+				o.ase_texcoord4.zw = v.texcoord1.xy;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.positionOS.xyz;
@@ -1889,34 +1957,51 @@ Shader "ASE/XiaoRong"
 				float temp_output_28_0 = ( temp_output_27_0 - step( temp_output_32_0 , tex2DNode22.r ) );
 				float4 lerpResult31 = lerp( temp_output_12_0 , ( temp_output_28_0 * _Color1 ) , temp_output_28_0);
 				#if defined(_KEYWORD1_X)
-				float staticSwitch68 = IN.ase_texcoord5.x;
+				float staticSwitch68 = IN.ase_texcoord5.xyz.x;
 				#elif defined(_KEYWORD1_Y)
-				float staticSwitch68 = IN.ase_texcoord5.y;
+				float staticSwitch68 = IN.ase_texcoord5.xyz.y;
 				#elif defined(_KEYWORD1_Z)
-				float staticSwitch68 = IN.ase_texcoord5.z;
+				float staticSwitch68 = IN.ase_texcoord5.xyz.z;
 				#else
-				float staticSwitch68 = IN.ase_texcoord5.x;
+				float staticSwitch68 = IN.ase_texcoord5.xyz.x;
 				#endif
 				float temp_output_35_0 = ( staticSwitch68 + (_Vector1.x + (_Float5 - 0.0) * (_Vector1.y - _Vector1.x) / (1.0 - 0.0)) );
 				float temp_output_38_0 = step( temp_output_35_0 , _Vector1.w );
 				float temp_output_36_0 = step( temp_output_35_0 , _Vector1.z );
-				float4 lerpResult54 = lerp( lerpResult31 , ( ( saturate( temp_output_38_0 ) - temp_output_36_0 ) * _Color2 ) , 0.5);
+				float2 texCoord107 = IN.ase_texcoord4.zw * float2( 1,1 ) + float2( 0,0 );
+				#ifdef _KEYWORD6_ON
+				float staticSwitch133 = texCoord107.y;
+				#else
+				float staticSwitch133 = texCoord107.x;
+				#endif
+				float temp_output_114_0 = (-0.02 + (_Float6 - 0.0) * (1.02 - -0.02) / (1.0 - 0.0));
+				float temp_output_108_0 = step( staticSwitch133 , temp_output_114_0 );
+				float temp_output_110_0 = step( ( staticSwitch133 + 0.01 ) , temp_output_114_0 );
 				
 				#ifdef _KEYWORD3_ON
 				float staticSwitch91 = saturate( ( 1.0 - temp_output_36_0 ) );
 				#else
 				float staticSwitch91 = saturate( temp_output_38_0 );
 				#endif
-				#ifdef _KEYWORD0_ON
-				float staticSwitch57 = ( temp_output_27_0 * staticSwitch91 );
+				#ifdef _KEYWORD5_ON
+				float staticSwitch132 = saturate( ( 1.0 - temp_output_110_0 ) );
 				#else
-				float staticSwitch57 = temp_output_27_0;
+				float staticSwitch132 = temp_output_108_0;
+				#endif
+				#if defined(_KEYWORD4_NOISE)
+				float staticSwitch124 = temp_output_27_0;
+				#elif defined(_KEYWORD4_XYZ)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch91 );
+				#elif defined(_KEYWORD4_UV)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch132 );
+				#else
+				float staticSwitch124 = temp_output_27_0;
 				#endif
 				
 
 				float3 BaseColor = temp_output_12_0.rgb;
-				float3 Emission = lerpResult54.rgb;
-				float Alpha = staticSwitch57;
+				float3 Emission = ( lerpResult31 + ( ( saturate( temp_output_38_0 ) - temp_output_36_0 ) * _Color2 ) + ( _Color1 * ( temp_output_108_0 - temp_output_110_0 ) ) ).rgb;
+				float Alpha = staticSwitch124;
 				float AlphaClipThreshold = 0.5;
 
 				#ifdef _ALPHATEST_ON
@@ -1983,9 +2068,11 @@ Shader "ASE/XiaoRong"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
 			#define ASE_NEEDS_FRAG_POSITION
-			#pragma shader_feature_local _KEYWORD0_ON
+			#pragma shader_feature_local _KEYWORD4_NOISE _KEYWORD4_XYZ _KEYWORD4_UV
 			#pragma shader_feature_local _KEYWORD3_ON
 			#pragma shader_feature_local _KEYWORD1_X _KEYWORD1_Y _KEYWORD1_Z
+			#pragma shader_feature_local _KEYWORD5_ON
+			#pragma shader_feature_local _KEYWORD6_ON
 
 
 			struct VertexInput
@@ -1993,6 +2080,7 @@ Shader "ASE/XiaoRong"
 				float4 positionOS : POSITION;
 				float3 normalOS : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -2020,6 +2108,7 @@ Shader "ASE/XiaoRong"
 			float _Float3;
 			float _Float4;
 			float _Float5;
+			float _Float6;
 			float _Float0;
 			float _Float1;
 			#ifdef ASE_TRANSMISSION
@@ -2066,9 +2155,7 @@ Shader "ASE/XiaoRong"
 
 				o.ase_texcoord2.xy = v.ase_texcoord.xy;
 				o.ase_texcoord3 = v.positionOS;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord2.zw = 0;
+				o.ase_texcoord2.zw = v.ase_texcoord1.xy;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.positionOS.xyz;
@@ -2107,6 +2194,7 @@ Shader "ASE/XiaoRong"
 				float4 vertex : INTERNALTESSPOS;
 				float3 normalOS : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
 
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -2125,6 +2213,7 @@ Shader "ASE/XiaoRong"
 				o.vertex = v.positionOS;
 				o.normalOS = v.normalOS;
 				o.ase_texcoord = v.ase_texcoord;
+				o.ase_texcoord1 = v.ase_texcoord1;
 				return o;
 			}
 
@@ -2164,6 +2253,7 @@ Shader "ASE/XiaoRong"
 				o.positionOS = patch[0].vertex * bary.x + patch[1].vertex * bary.y + patch[2].vertex * bary.z;
 				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
 				o.ase_texcoord = patch[0].ase_texcoord * bary.x + patch[1].ase_texcoord * bary.y + patch[2].ase_texcoord * bary.z;
+				o.ase_texcoord1 = patch[0].ase_texcoord1 * bary.x + patch[1].ase_texcoord1 * bary.y + patch[2].ase_texcoord1 * bary.z;
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
 				for (int i = 0; i < 3; ++i)
@@ -2208,13 +2298,13 @@ Shader "ASE/XiaoRong"
 				float4 tex2DNode22 = tex2D( _TextureSample3, uv_TextureSample322 );
 				float temp_output_27_0 = step( temp_output_32_0 , ( tex2DNode22.r + _Float4 ) );
 				#if defined(_KEYWORD1_X)
-				float staticSwitch68 = IN.ase_texcoord3.x;
+				float staticSwitch68 = IN.ase_texcoord3.xyz.x;
 				#elif defined(_KEYWORD1_Y)
-				float staticSwitch68 = IN.ase_texcoord3.y;
+				float staticSwitch68 = IN.ase_texcoord3.xyz.y;
 				#elif defined(_KEYWORD1_Z)
-				float staticSwitch68 = IN.ase_texcoord3.z;
+				float staticSwitch68 = IN.ase_texcoord3.xyz.z;
 				#else
-				float staticSwitch68 = IN.ase_texcoord3.x;
+				float staticSwitch68 = IN.ase_texcoord3.xyz.x;
 				#endif
 				float temp_output_35_0 = ( staticSwitch68 + (_Vector1.x + (_Float5 - 0.0) * (_Vector1.y - _Vector1.x) / (1.0 - 0.0)) );
 				float temp_output_38_0 = step( temp_output_35_0 , _Vector1.w );
@@ -2224,15 +2314,33 @@ Shader "ASE/XiaoRong"
 				#else
 				float staticSwitch91 = saturate( temp_output_38_0 );
 				#endif
-				#ifdef _KEYWORD0_ON
-				float staticSwitch57 = ( temp_output_27_0 * staticSwitch91 );
+				float2 texCoord107 = IN.ase_texcoord2.zw * float2( 1,1 ) + float2( 0,0 );
+				#ifdef _KEYWORD6_ON
+				float staticSwitch133 = texCoord107.y;
 				#else
-				float staticSwitch57 = temp_output_27_0;
+				float staticSwitch133 = texCoord107.x;
+				#endif
+				float temp_output_114_0 = (-0.02 + (_Float6 - 0.0) * (1.02 - -0.02) / (1.0 - 0.0));
+				float temp_output_108_0 = step( staticSwitch133 , temp_output_114_0 );
+				float temp_output_110_0 = step( ( staticSwitch133 + 0.01 ) , temp_output_114_0 );
+				#ifdef _KEYWORD5_ON
+				float staticSwitch132 = saturate( ( 1.0 - temp_output_110_0 ) );
+				#else
+				float staticSwitch132 = temp_output_108_0;
+				#endif
+				#if defined(_KEYWORD4_NOISE)
+				float staticSwitch124 = temp_output_27_0;
+				#elif defined(_KEYWORD4_XYZ)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch91 );
+				#elif defined(_KEYWORD4_UV)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch132 );
+				#else
+				float staticSwitch124 = temp_output_27_0;
 				#endif
 				
 
 				float3 BaseColor = temp_output_12_0.rgb;
-				float Alpha = staticSwitch57;
+				float Alpha = staticSwitch124;
 				float AlphaClipThreshold = 0.5;
 
 				half4 color = half4(BaseColor, Alpha );
@@ -2315,9 +2423,11 @@ Shader "ASE/XiaoRong"
             #endif
 
 			#define ASE_NEEDS_FRAG_POSITION
-			#pragma shader_feature_local _KEYWORD0_ON
+			#pragma shader_feature_local _KEYWORD4_NOISE _KEYWORD4_XYZ _KEYWORD4_UV
 			#pragma shader_feature_local _KEYWORD3_ON
 			#pragma shader_feature_local _KEYWORD1_X _KEYWORD1_Y _KEYWORD1_Z
+			#pragma shader_feature_local _KEYWORD5_ON
+			#pragma shader_feature_local _KEYWORD6_ON
 
 
 			#if defined(ASE_EARLY_Z_DEPTH_OPTIMIZE) && (SHADER_TARGET >= 45)
@@ -2334,6 +2444,7 @@ Shader "ASE/XiaoRong"
 				float3 normalOS : NORMAL;
 				float4 tangentOS : TANGENT;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -2364,6 +2475,7 @@ Shader "ASE/XiaoRong"
 			float _Float3;
 			float _Float4;
 			float _Float5;
+			float _Float6;
 			float _Float0;
 			float _Float1;
 			#ifdef ASE_TRANSMISSION
@@ -2410,9 +2522,7 @@ Shader "ASE/XiaoRong"
 
 				o.ase_texcoord5.xy = v.ase_texcoord.xy;
 				o.ase_texcoord6 = v.positionOS;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord5.zw = 0;
+				o.ase_texcoord5.zw = v.ase_texcoord1.xy;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.positionOS.xyz;
 				#else
@@ -2458,6 +2568,7 @@ Shader "ASE/XiaoRong"
 				float3 normalOS : NORMAL;
 				float4 tangentOS : TANGENT;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
 
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -2477,6 +2588,7 @@ Shader "ASE/XiaoRong"
 				o.normalOS = v.normalOS;
 				o.tangentOS = v.tangentOS;
 				o.ase_texcoord = v.ase_texcoord;
+				o.ase_texcoord1 = v.ase_texcoord1;
 				return o;
 			}
 
@@ -2517,6 +2629,7 @@ Shader "ASE/XiaoRong"
 				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
 				o.tangentOS = patch[0].tangentOS * bary.x + patch[1].tangentOS * bary.y + patch[2].tangentOS * bary.z;
 				o.ase_texcoord = patch[0].ase_texcoord * bary.x + patch[1].ase_texcoord * bary.y + patch[2].ase_texcoord * bary.z;
+				o.ase_texcoord1 = patch[0].ase_texcoord1 * bary.x + patch[1].ase_texcoord1 * bary.y + patch[2].ase_texcoord1 * bary.z;
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
 				for (int i = 0; i < 3; ++i)
@@ -2575,13 +2688,13 @@ Shader "ASE/XiaoRong"
 				float4 tex2DNode22 = tex2D( _TextureSample3, uv_TextureSample322 );
 				float temp_output_27_0 = step( temp_output_32_0 , ( tex2DNode22.r + _Float4 ) );
 				#if defined(_KEYWORD1_X)
-				float staticSwitch68 = IN.ase_texcoord6.x;
+				float staticSwitch68 = IN.ase_texcoord6.xyz.x;
 				#elif defined(_KEYWORD1_Y)
-				float staticSwitch68 = IN.ase_texcoord6.y;
+				float staticSwitch68 = IN.ase_texcoord6.xyz.y;
 				#elif defined(_KEYWORD1_Z)
-				float staticSwitch68 = IN.ase_texcoord6.z;
+				float staticSwitch68 = IN.ase_texcoord6.xyz.z;
 				#else
-				float staticSwitch68 = IN.ase_texcoord6.x;
+				float staticSwitch68 = IN.ase_texcoord6.xyz.x;
 				#endif
 				float temp_output_35_0 = ( staticSwitch68 + (_Vector1.x + (_Float5 - 0.0) * (_Vector1.y - _Vector1.x) / (1.0 - 0.0)) );
 				float temp_output_38_0 = step( temp_output_35_0 , _Vector1.w );
@@ -2591,15 +2704,33 @@ Shader "ASE/XiaoRong"
 				#else
 				float staticSwitch91 = saturate( temp_output_38_0 );
 				#endif
-				#ifdef _KEYWORD0_ON
-				float staticSwitch57 = ( temp_output_27_0 * staticSwitch91 );
+				float2 texCoord107 = IN.ase_texcoord5.zw * float2( 1,1 ) + float2( 0,0 );
+				#ifdef _KEYWORD6_ON
+				float staticSwitch133 = texCoord107.y;
 				#else
-				float staticSwitch57 = temp_output_27_0;
+				float staticSwitch133 = texCoord107.x;
+				#endif
+				float temp_output_114_0 = (-0.02 + (_Float6 - 0.0) * (1.02 - -0.02) / (1.0 - 0.0));
+				float temp_output_108_0 = step( staticSwitch133 , temp_output_114_0 );
+				float temp_output_110_0 = step( ( staticSwitch133 + 0.01 ) , temp_output_114_0 );
+				#ifdef _KEYWORD5_ON
+				float staticSwitch132 = saturate( ( 1.0 - temp_output_110_0 ) );
+				#else
+				float staticSwitch132 = temp_output_108_0;
+				#endif
+				#if defined(_KEYWORD4_NOISE)
+				float staticSwitch124 = temp_output_27_0;
+				#elif defined(_KEYWORD4_XYZ)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch91 );
+				#elif defined(_KEYWORD4_UV)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch132 );
+				#else
+				float staticSwitch124 = temp_output_27_0;
 				#endif
 				
 
 				float3 Normal = unpack20;
-				float Alpha = staticSwitch57;
+				float Alpha = staticSwitch124;
 				float AlphaClipThreshold = 0.5;
 
 				#ifdef ASE_DEPTH_WRITE_ON
@@ -2753,8 +2884,10 @@ Shader "ASE/XiaoRong"
 
 			#define ASE_NEEDS_FRAG_POSITION
 			#pragma shader_feature_local _KEYWORD1_X _KEYWORD1_Y _KEYWORD1_Z
-			#pragma shader_feature_local _KEYWORD0_ON
+			#pragma shader_feature_local _KEYWORD6_ON
+			#pragma shader_feature_local _KEYWORD4_NOISE _KEYWORD4_XYZ _KEYWORD4_UV
 			#pragma shader_feature_local _KEYWORD3_ON
+			#pragma shader_feature_local _KEYWORD5_ON
 
 
 			#if defined(ASE_EARLY_Z_DEPTH_OPTIMIZE) && (SHADER_TARGET >= 45)
@@ -2807,6 +2940,7 @@ Shader "ASE/XiaoRong"
 			float _Float3;
 			float _Float4;
 			float _Float5;
+			float _Float6;
 			float _Float0;
 			float _Float1;
 			#ifdef ASE_TRANSMISSION
@@ -2857,9 +2991,7 @@ Shader "ASE/XiaoRong"
 
 				o.ase_texcoord8.xy = v.texcoord.xy;
 				o.ase_texcoord9 = v.positionOS;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord8.zw = 0;
+				o.ase_texcoord8.zw = v.texcoord1.xy;
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.positionOS.xyz;
 				#else
@@ -3062,18 +3194,26 @@ Shader "ASE/XiaoRong"
 				float temp_output_28_0 = ( temp_output_27_0 - step( temp_output_32_0 , tex2DNode22.r ) );
 				float4 lerpResult31 = lerp( temp_output_12_0 , ( temp_output_28_0 * _Color1 ) , temp_output_28_0);
 				#if defined(_KEYWORD1_X)
-				float staticSwitch68 = IN.ase_texcoord9.x;
+				float staticSwitch68 = IN.ase_texcoord9.xyz.x;
 				#elif defined(_KEYWORD1_Y)
-				float staticSwitch68 = IN.ase_texcoord9.y;
+				float staticSwitch68 = IN.ase_texcoord9.xyz.y;
 				#elif defined(_KEYWORD1_Z)
-				float staticSwitch68 = IN.ase_texcoord9.z;
+				float staticSwitch68 = IN.ase_texcoord9.xyz.z;
 				#else
-				float staticSwitch68 = IN.ase_texcoord9.x;
+				float staticSwitch68 = IN.ase_texcoord9.xyz.x;
 				#endif
 				float temp_output_35_0 = ( staticSwitch68 + (_Vector1.x + (_Float5 - 0.0) * (_Vector1.y - _Vector1.x) / (1.0 - 0.0)) );
 				float temp_output_38_0 = step( temp_output_35_0 , _Vector1.w );
 				float temp_output_36_0 = step( temp_output_35_0 , _Vector1.z );
-				float4 lerpResult54 = lerp( lerpResult31 , ( ( saturate( temp_output_38_0 ) - temp_output_36_0 ) * _Color2 ) , 0.5);
+				float2 texCoord107 = IN.ase_texcoord8.zw * float2( 1,1 ) + float2( 0,0 );
+				#ifdef _KEYWORD6_ON
+				float staticSwitch133 = texCoord107.y;
+				#else
+				float staticSwitch133 = texCoord107.x;
+				#endif
+				float temp_output_114_0 = (-0.02 + (_Float6 - 0.0) * (1.02 - -0.02) / (1.0 - 0.0));
+				float temp_output_108_0 = step( staticSwitch133 , temp_output_114_0 );
+				float temp_output_110_0 = step( ( staticSwitch133 + 0.01 ) , temp_output_114_0 );
 				
 				float2 uv_TextureSample113 = IN.ase_texcoord8.xy;
 				float4 tex2DNode13 = tex2D( _TextureSample1, uv_TextureSample113 );
@@ -3084,21 +3224,30 @@ Shader "ASE/XiaoRong"
 				#else
 				float staticSwitch91 = saturate( temp_output_38_0 );
 				#endif
-				#ifdef _KEYWORD0_ON
-				float staticSwitch57 = ( temp_output_27_0 * staticSwitch91 );
+				#ifdef _KEYWORD5_ON
+				float staticSwitch132 = saturate( ( 1.0 - temp_output_110_0 ) );
 				#else
-				float staticSwitch57 = temp_output_27_0;
+				float staticSwitch132 = temp_output_108_0;
+				#endif
+				#if defined(_KEYWORD4_NOISE)
+				float staticSwitch124 = temp_output_27_0;
+				#elif defined(_KEYWORD4_XYZ)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch91 );
+				#elif defined(_KEYWORD4_UV)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch132 );
+				#else
+				float staticSwitch124 = temp_output_27_0;
 				#endif
 				
 
 				float3 BaseColor = temp_output_12_0.rgb;
 				float3 Normal = unpack20;
-				float3 Emission = lerpResult54.rgb;
+				float3 Emission = ( lerpResult31 + ( ( saturate( temp_output_38_0 ) - temp_output_36_0 ) * _Color2 ) + ( _Color1 * ( temp_output_108_0 - temp_output_110_0 ) ) ).rgb;
 				float3 Specular = 0.5;
 				float Metallic = ( appendResult19 * _Float0 ).x;
 				float Smoothness = ( tex2DNode13.a * _Float1 );
 				float Occlusion = 1;
-				float Alpha = staticSwitch57;
+				float Alpha = staticSwitch124;
 				float AlphaClipThreshold = 0.5;
 				float AlphaClipThresholdShadow = 0.5;
 				float3 BakedGI = 0;
@@ -3260,9 +3409,11 @@ Shader "ASE/XiaoRong"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
 			#define ASE_NEEDS_FRAG_POSITION
-			#pragma shader_feature_local _KEYWORD0_ON
+			#pragma shader_feature_local _KEYWORD4_NOISE _KEYWORD4_XYZ _KEYWORD4_UV
 			#pragma shader_feature_local _KEYWORD3_ON
 			#pragma shader_feature_local _KEYWORD1_X _KEYWORD1_Y _KEYWORD1_Z
+			#pragma shader_feature_local _KEYWORD5_ON
+			#pragma shader_feature_local _KEYWORD6_ON
 
 
 			struct VertexInput
@@ -3270,6 +3421,7 @@ Shader "ASE/XiaoRong"
 				float4 positionOS : POSITION;
 				float3 normalOS : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -3291,6 +3443,7 @@ Shader "ASE/XiaoRong"
 			float _Float3;
 			float _Float4;
 			float _Float5;
+			float _Float6;
 			float _Float0;
 			float _Float1;
 			#ifdef ASE_TRANSMISSION
@@ -3344,9 +3497,7 @@ Shader "ASE/XiaoRong"
 
 				o.ase_texcoord.xy = v.ase_texcoord.xy;
 				o.ase_texcoord1 = v.positionOS;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord.zw = 0;
+				o.ase_texcoord.zw = v.ase_texcoord1.xy;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.positionOS.xyz;
@@ -3377,6 +3528,7 @@ Shader "ASE/XiaoRong"
 				float4 vertex : INTERNALTESSPOS;
 				float3 normalOS : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
 
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -3395,6 +3547,7 @@ Shader "ASE/XiaoRong"
 				o.vertex = v.positionOS;
 				o.normalOS = v.normalOS;
 				o.ase_texcoord = v.ase_texcoord;
+				o.ase_texcoord1 = v.ase_texcoord1;
 				return o;
 			}
 
@@ -3434,6 +3587,7 @@ Shader "ASE/XiaoRong"
 				o.positionOS = patch[0].vertex * bary.x + patch[1].vertex * bary.y + patch[2].vertex * bary.z;
 				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
 				o.ase_texcoord = patch[0].ase_texcoord * bary.x + patch[1].ase_texcoord * bary.y + patch[2].ase_texcoord * bary.z;
+				o.ase_texcoord1 = patch[0].ase_texcoord1 * bary.x + patch[1].ase_texcoord1 * bary.y + patch[2].ase_texcoord1 * bary.z;
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
 				for (int i = 0; i < 3; ++i)
@@ -3460,13 +3614,13 @@ Shader "ASE/XiaoRong"
 				float4 tex2DNode22 = tex2D( _TextureSample3, uv_TextureSample322 );
 				float temp_output_27_0 = step( temp_output_32_0 , ( tex2DNode22.r + _Float4 ) );
 				#if defined(_KEYWORD1_X)
-				float staticSwitch68 = IN.ase_texcoord1.x;
+				float staticSwitch68 = IN.ase_texcoord1.xyz.x;
 				#elif defined(_KEYWORD1_Y)
-				float staticSwitch68 = IN.ase_texcoord1.y;
+				float staticSwitch68 = IN.ase_texcoord1.xyz.y;
 				#elif defined(_KEYWORD1_Z)
-				float staticSwitch68 = IN.ase_texcoord1.z;
+				float staticSwitch68 = IN.ase_texcoord1.xyz.z;
 				#else
-				float staticSwitch68 = IN.ase_texcoord1.x;
+				float staticSwitch68 = IN.ase_texcoord1.xyz.x;
 				#endif
 				float temp_output_35_0 = ( staticSwitch68 + (_Vector1.x + (_Float5 - 0.0) * (_Vector1.y - _Vector1.x) / (1.0 - 0.0)) );
 				float temp_output_38_0 = step( temp_output_35_0 , _Vector1.w );
@@ -3476,14 +3630,32 @@ Shader "ASE/XiaoRong"
 				#else
 				float staticSwitch91 = saturate( temp_output_38_0 );
 				#endif
-				#ifdef _KEYWORD0_ON
-				float staticSwitch57 = ( temp_output_27_0 * staticSwitch91 );
+				float2 texCoord107 = IN.ase_texcoord.zw * float2( 1,1 ) + float2( 0,0 );
+				#ifdef _KEYWORD6_ON
+				float staticSwitch133 = texCoord107.y;
 				#else
-				float staticSwitch57 = temp_output_27_0;
+				float staticSwitch133 = texCoord107.x;
+				#endif
+				float temp_output_114_0 = (-0.02 + (_Float6 - 0.0) * (1.02 - -0.02) / (1.0 - 0.0));
+				float temp_output_108_0 = step( staticSwitch133 , temp_output_114_0 );
+				float temp_output_110_0 = step( ( staticSwitch133 + 0.01 ) , temp_output_114_0 );
+				#ifdef _KEYWORD5_ON
+				float staticSwitch132 = saturate( ( 1.0 - temp_output_110_0 ) );
+				#else
+				float staticSwitch132 = temp_output_108_0;
+				#endif
+				#if defined(_KEYWORD4_NOISE)
+				float staticSwitch124 = temp_output_27_0;
+				#elif defined(_KEYWORD4_XYZ)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch91 );
+				#elif defined(_KEYWORD4_UV)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch132 );
+				#else
+				float staticSwitch124 = temp_output_27_0;
 				#endif
 				
 
-				surfaceDescription.Alpha = staticSwitch57;
+				surfaceDescription.Alpha = staticSwitch124;
 				surfaceDescription.AlphaClipThreshold = 0.5;
 
 				#if _ALPHATEST_ON
@@ -3566,9 +3738,11 @@ Shader "ASE/XiaoRong"
 			#include "Packages/com.unity.render-pipelines.universal/Editor/ShaderGraph/Includes/ShaderPass.hlsl"
 
 			#define ASE_NEEDS_FRAG_POSITION
-			#pragma shader_feature_local _KEYWORD0_ON
+			#pragma shader_feature_local _KEYWORD4_NOISE _KEYWORD4_XYZ _KEYWORD4_UV
 			#pragma shader_feature_local _KEYWORD3_ON
 			#pragma shader_feature_local _KEYWORD1_X _KEYWORD1_Y _KEYWORD1_Z
+			#pragma shader_feature_local _KEYWORD5_ON
+			#pragma shader_feature_local _KEYWORD6_ON
 
 
 			struct VertexInput
@@ -3576,6 +3750,7 @@ Shader "ASE/XiaoRong"
 				float4 positionOS : POSITION;
 				float3 normalOS : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -3597,6 +3772,7 @@ Shader "ASE/XiaoRong"
 			float _Float3;
 			float _Float4;
 			float _Float5;
+			float _Float6;
 			float _Float0;
 			float _Float1;
 			#ifdef ASE_TRANSMISSION
@@ -3650,9 +3826,7 @@ Shader "ASE/XiaoRong"
 
 				o.ase_texcoord.xy = v.ase_texcoord.xy;
 				o.ase_texcoord1 = v.positionOS;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord.zw = 0;
+				o.ase_texcoord.zw = v.ase_texcoord1.xy;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.positionOS.xyz;
@@ -3682,6 +3856,7 @@ Shader "ASE/XiaoRong"
 				float4 vertex : INTERNALTESSPOS;
 				float3 normalOS : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
 
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -3700,6 +3875,7 @@ Shader "ASE/XiaoRong"
 				o.vertex = v.positionOS;
 				o.normalOS = v.normalOS;
 				o.ase_texcoord = v.ase_texcoord;
+				o.ase_texcoord1 = v.ase_texcoord1;
 				return o;
 			}
 
@@ -3739,6 +3915,7 @@ Shader "ASE/XiaoRong"
 				o.positionOS = patch[0].vertex * bary.x + patch[1].vertex * bary.y + patch[2].vertex * bary.z;
 				o.normalOS = patch[0].normalOS * bary.x + patch[1].normalOS * bary.y + patch[2].normalOS * bary.z;
 				o.ase_texcoord = patch[0].ase_texcoord * bary.x + patch[1].ase_texcoord * bary.y + patch[2].ase_texcoord * bary.z;
+				o.ase_texcoord1 = patch[0].ase_texcoord1 * bary.x + patch[1].ase_texcoord1 * bary.y + patch[2].ase_texcoord1 * bary.z;
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
 				for (int i = 0; i < 3; ++i)
@@ -3765,13 +3942,13 @@ Shader "ASE/XiaoRong"
 				float4 tex2DNode22 = tex2D( _TextureSample3, uv_TextureSample322 );
 				float temp_output_27_0 = step( temp_output_32_0 , ( tex2DNode22.r + _Float4 ) );
 				#if defined(_KEYWORD1_X)
-				float staticSwitch68 = IN.ase_texcoord1.x;
+				float staticSwitch68 = IN.ase_texcoord1.xyz.x;
 				#elif defined(_KEYWORD1_Y)
-				float staticSwitch68 = IN.ase_texcoord1.y;
+				float staticSwitch68 = IN.ase_texcoord1.xyz.y;
 				#elif defined(_KEYWORD1_Z)
-				float staticSwitch68 = IN.ase_texcoord1.z;
+				float staticSwitch68 = IN.ase_texcoord1.xyz.z;
 				#else
-				float staticSwitch68 = IN.ase_texcoord1.x;
+				float staticSwitch68 = IN.ase_texcoord1.xyz.x;
 				#endif
 				float temp_output_35_0 = ( staticSwitch68 + (_Vector1.x + (_Float5 - 0.0) * (_Vector1.y - _Vector1.x) / (1.0 - 0.0)) );
 				float temp_output_38_0 = step( temp_output_35_0 , _Vector1.w );
@@ -3781,14 +3958,32 @@ Shader "ASE/XiaoRong"
 				#else
 				float staticSwitch91 = saturate( temp_output_38_0 );
 				#endif
-				#ifdef _KEYWORD0_ON
-				float staticSwitch57 = ( temp_output_27_0 * staticSwitch91 );
+				float2 texCoord107 = IN.ase_texcoord.zw * float2( 1,1 ) + float2( 0,0 );
+				#ifdef _KEYWORD6_ON
+				float staticSwitch133 = texCoord107.y;
 				#else
-				float staticSwitch57 = temp_output_27_0;
+				float staticSwitch133 = texCoord107.x;
+				#endif
+				float temp_output_114_0 = (-0.02 + (_Float6 - 0.0) * (1.02 - -0.02) / (1.0 - 0.0));
+				float temp_output_108_0 = step( staticSwitch133 , temp_output_114_0 );
+				float temp_output_110_0 = step( ( staticSwitch133 + 0.01 ) , temp_output_114_0 );
+				#ifdef _KEYWORD5_ON
+				float staticSwitch132 = saturate( ( 1.0 - temp_output_110_0 ) );
+				#else
+				float staticSwitch132 = temp_output_108_0;
+				#endif
+				#if defined(_KEYWORD4_NOISE)
+				float staticSwitch124 = temp_output_27_0;
+				#elif defined(_KEYWORD4_XYZ)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch91 );
+				#elif defined(_KEYWORD4_UV)
+				float staticSwitch124 = ( temp_output_27_0 * staticSwitch132 );
+				#else
+				float staticSwitch124 = temp_output_27_0;
 				#endif
 				
 
-				surfaceDescription.Alpha = staticSwitch57;
+				surfaceDescription.Alpha = staticSwitch124;
 				surfaceDescription.AlphaClipThreshold = 0.5;
 
 				#if _ALPHATEST_ON
@@ -3822,33 +4017,44 @@ Shader "ASE/XiaoRong"
 }
 /*ASEBEGIN
 Version=19302
-Node;AmplifyShaderEditor.PosVertexDataNode;49;-1518.205,1304.487;Inherit;True;1;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;34;-1700.769,1570.922;Inherit;False;Property;_Float5;轴向溶解;14;0;Create;False;0;0;0;False;0;False;1;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.Vector4Node;97;-1648.526,1831.072;Inherit;False;Property;_Vector1;范围XY光变宽度ZW;16;0;Create;False;0;0;0;False;0;False;-0.5,1.7,0.5,0.51;-0.5,1.7,0.5,0.51;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.StaticSwitch;68;-1263.883,1329.081;Inherit;False;Property;_Keyword1;轴向;13;0;Create;False;0;0;0;False;0;False;0;0;1;True;;KeywordEnum;3;X;Y;Z;Create;True;True;All;9;1;FLOAT;0;False;0;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.TFHCRemapNode;45;-1359.985,1599.37;Inherit;True;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;-0.5;False;4;FLOAT;1.7;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;35;-1034.799,1355.957;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.StepOpNode;38;-770.8232,1671.627;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode;22;-1326.397,693.174;Inherit;True;Property;_TextureSample3;遮罩;7;1;[NoScaleOffset];Create;False;0;0;0;False;0;False;-1;1a07375f87a7aa8488222d2b412b77a2;1a07375f87a7aa8488222d2b412b77a2;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;26;-1172.147,942.0137;Inherit;False;Property;_Float4;硬边;9;0;Create;False;0;0;0;False;0;False;0.02;0.02;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;24;-1844.734,509.6204;Inherit;False;Property;_Float3;溶解;8;0;Create;False;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.WireNode;53;-548.1499,1655.5;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.StepOpNode;36;-763.4084,1423.13;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;34;-1828.081,2147.03;Inherit;False;Property;_Float5;轴向溶解;14;0;Create;False;0;0;0;False;0;False;1;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.PosVertexDataNode;49;-1738.517,1882.594;Inherit;True;0;0;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.Vector4Node;97;-1681.505,2321.141;Inherit;False;Property;_Vector1;范围XY光边宽度ZW;16;0;Create;False;0;0;0;False;0;False;-0.5,1.7,0.5,0.51;-0.5,1.7,0.5,0.51;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.TextureCoordinatesNode;107;-1773.359,1216.516;Inherit;False;1;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.StaticSwitch;68;-1391.195,1913.188;Inherit;False;Property;_Keyword1;轴向;13;0;Create;False;0;0;0;False;0;False;0;0;0;True;;KeywordEnum;3;X;Y;Z;Create;True;True;All;9;1;FLOAT;0;False;0;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.TFHCRemapNode;45;-1384.72,2123.374;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;-0.5;False;4;FLOAT;1.7;False;1;FLOAT;0
+Node;AmplifyShaderEditor.StaticSwitch;133;-1520.906,1239.739;Inherit;False;Property;_Keyword6;XY方向翻转;18;0;Create;False;0;0;0;False;0;False;0;1;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;FLOAT;0;False;0;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleAddOpNode;35;-1109.861,2027.558;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;113;-1253.232,1352.277;Inherit;False;Property;_Float6;UV溶解;17;0;Create;False;0;0;0;False;0;False;0.599584;0.9196207;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.WireNode;138;-1291.733,1532.949;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SamplerNode;22;-1326.397,693.174;Inherit;True;Property;_TextureSample3;遮罩;8;1;[NoScaleOffset];Create;False;0;0;0;False;0;False;-1;1a07375f87a7aa8488222d2b412b77a2;1a07375f87a7aa8488222d2b412b77a2;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;24;-1844.734,509.6204;Inherit;False;Property;_Float3;溶解;9;0;Create;False;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.StepOpNode;38;-844.0828,2258.545;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;26;-1175.147,941.0137;Inherit;False;Property;_Float4;光边宽度;10;0;Create;False;0;0;0;False;0;False;0.02;0.02;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.TFHCRemapNode;114;-904.2449,1364.627;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;-0.02;False;4;FLOAT;1.02;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleAddOpNode;111;-868.0067,1576.922;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0.01;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;25;-974.1157,902.0153;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TFHCRemapNode;32;-1479.944,517.7433;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;4;FLOAT;1.2;False;1;FLOAT;0
-Node;AmplifyShaderEditor.WireNode;87;-475.4278,1356.458;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.OneMinusNode;89;-453.0227,1433.052;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.StepOpNode;36;-836.6679,2010.049;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.WireNode;53;-679.89,2231.608;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.StepOpNode;110;-610.6014,1505.194;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0.49;False;1;FLOAT;0
 Node;AmplifyShaderEditor.StepOpNode;27;-717.8212,786.7454;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SaturateNode;92;-238.5289,1469.775;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SaturateNode;43;-232.7764,1304.175;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.StaticSwitch;91;-29.5673,1325.678;Inherit;False;Property;_Keyword3;反向;12;0;Create;False;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;FLOAT;0;False;0;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.WireNode;69;-480.2174,1092.089;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;50;276.2982,1085.613;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;39;-1043.693,1739.599;Inherit;False;Constant;_Float7;Float 7;14;0;Create;True;0;0;0;False;0;False;0.51;0.49;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;37;-1041.25,1652.14;Inherit;False;Constant;_Float6;Float 6;13;0;Create;True;0;0;0;False;0;False;0.5;0.5;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.OneMinusNode;89;-580.3349,2009.16;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.WireNode;87;-647.0168,1945.849;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.OneMinusNode;128;-231.7161,1232.862;Inherit;True;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.StepOpNode;108;-595.481,1219.69;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0.5;False;1;FLOAT;0
+Node;AmplifyShaderEditor.WireNode;106;-439.7937,1076.177;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SaturateNode;92;-365.8412,2045.883;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SaturateNode;43;-360.0887,1880.282;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SaturateNode;131;-35.51669,1221.761;Inherit;True;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.WireNode;69;149.139,889.9711;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.StaticSwitch;91;-82.30853,1903.871;Inherit;False;Property;_Keyword3;轴向翻转;12;0;Create;False;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;FLOAT;0;False;0;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.WireNode;136;936.782,780.5733;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.StaticSwitch;132;350.1028,1035.984;Inherit;True;Property;_Keyword5;UV反向;19;0;Create;False;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;FLOAT;0;False;0;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;50;787.6896,811.9143;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;135;1017.358,882.2433;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.ColorNode;11;-1243.96,-249.6278;Inherit;False;Property;_Color0;乘颜色;1;0;Create;False;0;0;0;False;0;False;1,1,1,0;1,1,1,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;12;-983.9598,-347.6277;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;14;-876.9598,-24.6278;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;17;-875.9598,74.37222;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.DynamicAppendNode;19;-1038.96,-58.62779;Inherit;False;FLOAT3;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.RangedFloatNode;16;-1311.96,186.3723;Inherit;False;Property;_Float1;乘粗糙;4;0;Create;False;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
@@ -3860,15 +4066,18 @@ Node;AmplifyShaderEditor.RangedFloatNode;21;-1625.959,315.3723;Inherit;False;Pro
 Node;AmplifyShaderEditor.StepOpNode;23;-882.0305,510.3234;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.LerpOp;31;-9.652494,329.0094;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleSubtractOpNode;28;-478.581,528.9582;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;29;-181.1974,788.9783;Inherit;False;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.ColorNode;30;-440.3016,895.9759;Inherit;False;Property;_Color1;光边颜色;10;1;[HDR];Create;False;0;0;0;False;0;False;0,1,0.3174081,0;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.LerpOp;54;682.0354,322.2884;Inherit;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.RangedFloatNode;56;401.0704,451.0067;Inherit;False;Constant;_Float8;Float 8;13;0;Create;True;0;0;0;False;0;False;0.5;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.StaticSwitch;57;702.2018,629.8452;Inherit;False;Property;_Keyword0;轴向溶解;11;0;Create;False;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;FLOAT;0;False;0;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SaturateNode;42;-520.8585,1740.57;Inherit;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleSubtractOpNode;44;-223.6099,1721.928;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.ColorNode;46;-292.6017,1874.1;Inherit;False;Property;_Color2;轴向颜色;15;1;[HDR];Create;False;0;0;0;False;0;False;5.340313,0,0,0;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;47;23.59116,1785.394;Inherit;True;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.ColorNode;30;-440.3016,895.9759;Inherit;False;Property;_Color1;光边颜色;11;1;[HDR];Create;False;0;0;0;False;0;False;0,1,0.3174081,0;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.ColorNode;46;-419.9141,2450.208;Inherit;False;Property;_Color2;轴向颜色;15;1;[HDR];Create;False;0;0;0;False;0;False;5.340313,0,0,0;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleSubtractOpNode;44;-333.0117,2280.126;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SaturateNode;42;-586.298,2298.768;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;14;-872.9598,-20.6278;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.WireNode;126;514.0638,1446.679;Inherit;False;1;0;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;47;-117.6744,2310.693;Inherit;False;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleAddOpNode;115;853.429,450.3642;Inherit;False;3;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.StaticSwitch;124;1316.816,757.0274;Inherit;False;Property;_Keyword4;溶解方式;7;0;Create;False;0;0;0;False;0;False;0;0;0;True;;KeywordEnum;3;Noise;XYZ;UV;Create;True;True;All;9;1;FLOAT;0;False;0;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;4;FLOAT;0;False;5;FLOAT;0;False;6;FLOAT;0;False;7;FLOAT;0;False;8;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;29;-125.0863,847.4271;Inherit;False;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;117;283.9342,1278.388;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleSubtractOpNode;112;-254.6646,1502.256;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;0;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ExtraPrePass;0;0;ExtraPrePass;5;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;0;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;2;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;3;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;True;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;True;1;LightMode=DepthOnly;False;False;0;;0;0;Standard;0;False;0
@@ -3878,38 +4087,53 @@ Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;6;0,0;Float;False;False;-1;
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;7;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;GBuffer;0;7;GBuffer;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;True;1;5;False;;10;False;;1;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalGBuffer;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;8;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;SceneSelectionPass;0;8;SceneSelectionPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=SceneSelectionPass;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;9;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ScenePickingPass;0;9;ScenePickingPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Picking;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1;1173.844,34.29031;Float;False;True;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;ASE/XiaoRong;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;21;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;True;1;5;False;;10;False;;1;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalForward;False;False;0;;0;0;Standard;39;Workflow;1;0;Surface;1;638984357420040040;  Refraction Model;0;0;  Blend;0;0;Two Sided;1;0;Fragment Normal Space,InvertActionOnDeselection;0;0;Forward Only;0;0;Transmission;0;0;  Transmission Shadow;0.5,False,;0;Translucency;0;0;  Translucency Strength;1,False,;0;  Normal Distortion;0.5,False,;0;  Scattering;2,False,;0;  Direct;0.9,False,;0;  Ambient;0.1,False,;0;  Shadow;0.5,False,;0;Cast Shadows;1;0;  Use Shadow Threshold;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;_FinalColorxAlpha;0;0;Meta Pass;1;0;Override Baked GI;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position,InvertActionOnDeselection;1;0;Debug Display;0;0;Clear Coat;0;0;0;10;False;True;True;True;True;True;True;True;True;True;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1;1544.101,114.7844;Float;False;True;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;ASE/XiaoRong;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;21;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;True;1;5;False;;10;False;;1;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalForward;False;False;0;;0;0;Standard;39;Workflow;1;0;Surface;1;638984357420040040;  Refraction Model;0;0;  Blend;0;0;Two Sided;1;0;Fragment Normal Space,InvertActionOnDeselection;0;0;Forward Only;0;0;Transmission;0;0;  Transmission Shadow;0.5,False,;0;Translucency;0;0;  Translucency Strength;1,False,;0;  Normal Distortion;0.5,False,;0;  Scattering;2,False,;0;  Direct;0.9,False,;0;  Ambient;0.1,False,;0;  Shadow;0.5,False,;0;Cast Shadows;1;0;  Use Shadow Threshold;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;_FinalColorxAlpha;0;0;Meta Pass;1;0;Override Baked GI;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position,InvertActionOnDeselection;1;0;Debug Display;0;0;Clear Coat;0;0;0;10;False;True;True;True;True;True;True;True;True;True;False;;False;0
 WireConnection;68;1;49;1
 WireConnection;68;0;49;2
 WireConnection;68;2;49;3
 WireConnection;45;0;34;0
 WireConnection;45;3;97;1
 WireConnection;45;4;97;2
+WireConnection;133;1;107;1
+WireConnection;133;0;107;2
 WireConnection;35;0;68;0
 WireConnection;35;1;45;0
+WireConnection;138;0;133;0
 WireConnection;38;0;35;0
 WireConnection;38;1;97;4
-WireConnection;53;0;38;0
-WireConnection;36;0;35;0
-WireConnection;36;1;97;3
+WireConnection;114;0;113;0
+WireConnection;111;0;138;0
 WireConnection;25;0;22;1
 WireConnection;25;1;26;0
 WireConnection;32;0;24;0
-WireConnection;87;0;53;0
-WireConnection;89;0;36;0
+WireConnection;36;0;35;0
+WireConnection;36;1;97;3
+WireConnection;53;0;38;0
+WireConnection;110;0;111;0
+WireConnection;110;1;114;0
 WireConnection;27;0;32;0
 WireConnection;27;1;25;0
+WireConnection;89;0;36;0
+WireConnection;87;0;53;0
+WireConnection;128;0;110;0
+WireConnection;108;0;133;0
+WireConnection;108;1;114;0
+WireConnection;106;0;27;0
 WireConnection;92;0;89;0
 WireConnection;43;0;87;0
+WireConnection;131;0;128;0
+WireConnection;69;0;106;0
 WireConnection;91;1;43;0
 WireConnection;91;0;92;0
-WireConnection;69;0;27;0
+WireConnection;136;0;27;0
+WireConnection;132;1;108;0
+WireConnection;132;0;131;0
 WireConnection;50;0;69;0
 WireConnection;50;1;91;0
+WireConnection;135;0;136;0
+WireConnection;135;1;132;0
 WireConnection;12;0;10;0
 WireConnection;12;1;11;0
-WireConnection;14;0;19;0
-WireConnection;14;1;15;0
 WireConnection;17;0;13;4
 WireConnection;17;1;16;0
 WireConnection;19;0;13;1
@@ -3923,23 +4147,31 @@ WireConnection;31;1;29;0
 WireConnection;31;2;28;0
 WireConnection;28;0;27;0
 WireConnection;28;1;23;0
-WireConnection;29;0;28;0
-WireConnection;29;1;30;0
-WireConnection;54;0;31;0
-WireConnection;54;1;47;0
-WireConnection;54;2;56;0
-WireConnection;57;1;27;0
-WireConnection;57;0;50;0
-WireConnection;42;0;38;0
 WireConnection;44;0;42;0
 WireConnection;44;1;36;0
+WireConnection;42;0;38;0
+WireConnection;14;0;19;0
+WireConnection;14;1;15;0
+WireConnection;126;0;47;0
 WireConnection;47;0;44;0
 WireConnection;47;1;46;0
+WireConnection;115;0;31;0
+WireConnection;115;1;126;0
+WireConnection;115;2;117;0
+WireConnection;124;1;27;0
+WireConnection;124;0;50;0
+WireConnection;124;2;135;0
+WireConnection;29;0;28;0
+WireConnection;29;1;30;0
+WireConnection;117;0;30;0
+WireConnection;117;1;112;0
+WireConnection;112;0;108;0
+WireConnection;112;1;110;0
 WireConnection;1;0;12;0
 WireConnection;1;1;20;0
-WireConnection;1;2;54;0
+WireConnection;1;2;115;0
 WireConnection;1;3;14;0
 WireConnection;1;4;17;0
-WireConnection;1;6;57;0
+WireConnection;1;6;124;0
 ASEEND*/
-//CHKSM=CA886B2655FF56EBA6BD931AE163B9D9E393B586
+//CHKSM=F72360D7C4B8166F151D4C07443678E6134DC955
