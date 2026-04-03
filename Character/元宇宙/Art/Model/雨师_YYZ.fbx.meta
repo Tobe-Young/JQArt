@@ -1,34 +1,49 @@
 fileFormatVersion: 2
 guid: d4a76810392f9c046a55b3d4b38afd37
 ModelImporter:
-  serializedVersion: 21300
+  serializedVersion: 22200
   internalIDToNameTable: []
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: 01.002
-    second: {fileID: 2100000, guid: 9868e84333bcb734aa5a9b881a9817a8, type: 2}
+    second: {fileID: 2100000, guid: 4935ad52a63b62649b8d84207dc5fc99, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: 02.002
-    second: {fileID: 2100000, guid: 1e3a767d2fe361344a23b34f0b7619f6, type: 2}
+    second: {fileID: 2100000, guid: 3bfdc54f778a2c24aa1b532924770934, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: 03.002
-    second: {fileID: 2100000, guid: 5ace7373374582f46ab598915754f687, type: 2}
+    second: {fileID: 2100000, guid: 5fd8341de0b017d479ea8b7187ef52af, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: 04.002
-    second: {fileID: 2100000, guid: 14dce5943360d7f4b889b6f67d1a8d2c, type: 2}
+    second: {fileID: 2100000, guid: 4658c890e6340da4fb0f215015eaadc0, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: 05.002
-    second: {fileID: 2100000, guid: 4c0e02e9e59aeef4f948bd19138c7a01, type: 2}
+    second: {fileID: 2100000, guid: 36b057f4799674a4a96fd345d7a85cde, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: yifu_1
+    second: {fileID: 2100000, guid: 4e49f5d9d9d7a024ea9827eccfb6b6f0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: yifu_2
+    second: {fileID: 2100000, guid: 0cc9f42f774931e4abd183cb5517e54a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: yifu_3
+    second: {fileID: 2100000, guid: e53aef0e05d861649a54a434da8401fd, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -65,6 +80,7 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 0
@@ -92,6 +108,7 @@ ModelImporter:
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -114,7 +131,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: 
+    rootMotionBoneName: GameSkeletonRoot_M
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
@@ -124,6 +141,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 0
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
