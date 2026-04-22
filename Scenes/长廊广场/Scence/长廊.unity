@@ -5751,6 +5751,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u62BD\u5956\u8F6C\u76D8"
       objectReference: {fileID: 0}
+    - target: {fileID: 5202116390296702916, guid: 93d4cb0e03cd62e49b7f24c5e5b52248, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -5810,6 +5814,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 10
   DataId: 10775
+  _useTriggerColliderForClick: 0
 --- !u!21 &163303217
 Material:
   serializedVersion: 8
@@ -6768,7 +6773,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1801555220865544593, guid: 4ed344785147ed84086995d3d7530127, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6.036
+      value: 8.465
       objectReference: {fileID: 0}
     - target: {fileID: 1801555220865544593, guid: 4ed344785147ed84086995d3d7530127, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6836,6 +6841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 14
   DataId: 
+  _useTriggerColliderForClick: 1
 --- !u!65 &353597244
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6855,8 +6861,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.30237, y: 1.3934295, z: 2.390358}
-  m_Center: {x: -1.651185, y: -0.113057494, z: -0.008388519}
+  m_Size: {x: 4.30237, y: 2.5, z: 2.390358}
+  m_Center: {x: -1.651185, y: 0.3, z: -0.008388519}
 --- !u!4 &353597245 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1801555220865544593, guid: 4ed344785147ed84086995d3d7530127, type: 3}
@@ -11785,8 +11791,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -23.789974, y: -351.88077}
-  m_SizeDelta: {x: -399.68994, y: -374.39}
+  m_AnchoredPosition: {x: 29.76, y: -351.88077}
+  m_SizeDelta: {x: -533.4, y: -374.39}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &383126330
 MonoBehaviour:
@@ -22083,6 +22089,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 7
   DataId: 
+  _useTriggerColliderForClick: 0
 --- !u!4 &432622737 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4233872721002930572, guid: 98e06f27992335e4bb93d57eb1e92395, type: 3}
@@ -22215,6 +22222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 4
   DataId: 
+  _useTriggerColliderForClick: 0
 --- !u!65 &440633146
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23305,7 +23313,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -587.3}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &626982948
 MonoBehaviour:
@@ -28894,7 +28902,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &838404681
 RectTransform:
   m_ObjectHideFlags: 0
@@ -39444,7 +39452,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5406275956936454572, guid: 878fe0ec64223824fb68e6ff474865f4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 13.298
+      value: 19.369001
       objectReference: {fileID: 0}
     - target: {fileID: 5406275956936454572, guid: 878fe0ec64223824fb68e6ff474865f4, type: 3}
       propertyPath: m_LocalRotation.w
@@ -39512,6 +39520,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 12
   DataId: 
+  _useTriggerColliderForClick: 1
 --- !u!65 &986486223
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -39531,8 +39540,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.30237, y: 1.3934295, z: 2.390358}
-  m_Center: {x: -1.651185, y: -0.113057494, z: -0.008388519}
+  m_Size: {x: 4.30237, y: 2.5, z: 2.390358}
+  m_Center: {x: -1.651185, y: 0.3, z: -0.008388519}
 --- !u!4 &986486224 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5406275956936454572, guid: 878fe0ec64223824fb68e6ff474865f4, type: 3}
@@ -40152,6 +40161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 0
   DataId: "\u6C89\u6D78\u5F0F\u6570\u85CF"
+  _useTriggerColliderForClick: 0
 --- !u!1 &1073391655
 GameObject:
   m_ObjectHideFlags: 0
@@ -41081,6 +41091,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u65B0\u4EBA\u5173\u6CE8\u516C\u4F17\u53F7"
       objectReference: {fileID: 0}
+    - target: {fileID: 3492966905879096340, guid: 1b57c26f6d3d6104ab67bd5a4cd62294, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5795204868343946141, guid: 1b57c26f6d3d6104ab67bd5a4cd62294, type: 3}
       propertyPath: m_LocalPosition.x
       value: 12.98
@@ -41410,6 +41424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 5
   DataId: 
+  _useTriggerColliderForClick: 0
 --- !u!1001 &1438635735
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41517,6 +41532,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 6
   DataId: 
+  _useTriggerColliderForClick: 0
 --- !u!135 &1453838282
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -77606,7 +77622,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 632519136549374732, guid: cce7f66dbd58f834ca6867825f249790, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.886
+      value: 15.734001
       objectReference: {fileID: 0}
     - target: {fileID: 632519136549374732, guid: cce7f66dbd58f834ca6867825f249790, type: 3}
       propertyPath: m_LocalRotation.w
@@ -77674,6 +77690,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 13
   DataId: 
+  _useTriggerColliderForClick: 1
 --- !u!65 &1887880018
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -77693,8 +77710,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.30237, y: 1.3934295, z: 2.390358}
-  m_Center: {x: -1.651185, y: -0.113057494, z: -0.008388519}
+  m_Size: {x: 4.30237, y: 2.5, z: 2.390358}
+  m_Center: {x: -1.651185, y: 0.3, z: -0.008388519}
 --- !u!4 &1887880019 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 632519136549374732, guid: cce7f66dbd58f834ca6867825f249790, type: 3}
@@ -82598,7 +82615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9134126871663537647, guid: 77f0cd1fb5c5cab48b83c963a2420973, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.47
+      value: 12.105
       objectReference: {fileID: 0}
     - target: {fileID: 9134126871663537647, guid: 77f0cd1fb5c5cab48b83c963a2420973, type: 3}
       propertyPath: m_LocalRotation.w
@@ -82658,6 +82675,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 11
   DataId: 
+  _useTriggerColliderForClick: 1
 --- !u!65 &1924249360
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -82677,8 +82695,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.30237, y: 1.3934295, z: 2.390358}
-  m_Center: {x: -1.651185, y: -0.113057494, z: -0.008388519}
+  m_Size: {x: 4.30237, y: 2.5, z: 2.390358}
+  m_Center: {x: -1.651185, y: 0.3, z: -0.008388519}
 --- !u!4 &1924249361 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9134126871663537647, guid: 77f0cd1fb5c5cab48b83c963a2420973, type: 3}
@@ -93096,7 +93114,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1675426446791219030, guid: 1acb8bdc60bebe64eb941c5672b9cd4d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.049
+      value: -8.474
       objectReference: {fileID: 0}
     - target: {fileID: 1675426446791219030, guid: 1acb8bdc60bebe64eb941c5672b9cd4d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -93174,8 +93192,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.30237, y: 1.3934295, z: 2.390358}
-  m_Center: {x: -1.651185, y: -0.113057494, z: -0.008388519}
+  m_Size: {x: 4.30237, y: 2.5, z: 2.390358}
+  m_Center: {x: -1.651185, y: 0.3, z: -0.008388519}
 --- !u!114 &2062414212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93190,6 +93208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 1
   DataId: 
+  _useTriggerColliderForClick: 1
 --- !u!1001 &2090941789
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -93409,6 +93428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 3
   DataId: 
+  _useTriggerColliderForClick: 0
 --- !u!1001 &2137198112
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -99406,6 +99426,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 0
   DataId: "\u5E73\u53F0\u52A8\u5411"
+  _useTriggerColliderForClick: 0
 --- !u!1 &4638552725011094697
 GameObject:
   m_ObjectHideFlags: 0
