@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cbac6e678443724c9bd2baf5d564c1d, type: 3}
+  m_Name: Sandstorm - Light
+  m_EditorClassIdentifier: 
+  showEditor: 0
+  showEffectControls: 0
+  showCloudControls: 1
+  showFlatCloudControls: 0
+  showFogControls: 0
+  showSkyControls: 0
+  showLightingControls: 0
+  showAuroraControls: 0
+  showEnvironmentControls: 0
+  showAudioControls: 0
+  showAmbientAudioControls: 1
+  showWeatherAudioControls: 0
+  showLightningControls: 0
+  cloudsOverride:
+    ambientLightIntensity: 1.017
+    coverage: 0.3
+    dilateCoverage: 0
+    dilateType: 0
+    typeModifier: 0.181
+    cloudTypeShaping: 1
+    scatteringIntensity: 5.28
+    multiScatterStrength: 0.433
+    multiScatterFalloff: 0.21
+    ambientFloor: 0.093
+    lightningIntensity: 0.5
+    exposure: 0.79
+    silverLiningSpread: 0.287
+    silverLiningIntensity: 0.9
+    edgeHighlightStrength: 0
+    ligthAbsorbtion: 1.5
+    density: 1
+    densitySmoothness: 1.21
+    baseErosionIntensity: 0.06
+    baseNoiseMultiplier: 0.65
+    detailErosionIntensity: 0.213
+    detailNoiseMultiplier: 0.99
+    curlIntensity: 0.693
+    bottomShape: 0
+    midShape: 0
+    topShape: 0
+    topLayer: 0
+    rampShape: 0.88
+    baseNoiseUVMultiplier: 1.38
+    detailNoiseUVMultiplier: 1
+  flatCloudsOverride:
+    cirrusCloudsAlpha: 0
+    cirrusCloudsCoverage: 0
+    cirrusCloudsColorPower: 1
+    flatCloudsCoverage: 2
+    flatCloudsDensity: 1
+    flatCloudsLightIntensity: 1.2
+    flatCloudsAmbientIntensity: 0.9
+    flatCloudsShadowIntensity: 0.6
+    flatCloudsShadowSteps: 8
+  lightingOverride:
+    directLightIntensityModifier: 0.75
+    ambientIntensityModifier: 0.7
+    shadowIntensity: 1
+  skyOverride:
+    intensity: 1
+    mieScatteringMultiplier: 1.1
+    skyColorExponent: 0.872
+    skyColorTint: {r: 1, g: 1, b: 1, a: 1}
+  fogOverride:
+    fogDensity: 0.469
+    fogHeightFalloff: 0.003
+    fogHeight: 0
+    fogDensity2: 0.475
+    fogHeightFalloff2: 0.05
+    fogHeight2: -3.82
+    fogColorBlend: 0.1
+    fogColorMod: {r: 0.8, g: 0.18958806, b: 0, a: 1}
+    scattering: 0.193
+    extinction: 0.025
+    anistropy: 0.3
+    unityFogDensity: 0.002
+    unityFogStartDistance: 0
+    unityFogEndDistance: 1000
+  auroraOverride:
+    auroraIntensity: 0
+  effectsOverride:
+    effectsOverride:
+    - showEditor: 1
+      name: Sandstorm - Animated
+      emission: 0.4
+  audioOverride:
+    ambientOverride: []
+    weatherOverride:
+    - showEditor: 1
+      name: Wind_3
+      volume: 0.6
+      spring: 0
+      summer: 0
+      autumn: 0
+      winter: 0
+  lightningOverride:
+    lightningStorm: 0
+    randomLightningDelay: 1
+  environmentOverride:
+    temperatureWeatherMod: 0
+    wetnessTarget: 0
+    snowTarget: 0
+    windDirectionX: -1
+    windDirectionY: -1
+    windSpeed: 0.7
+    windTurbulence: 0.8
