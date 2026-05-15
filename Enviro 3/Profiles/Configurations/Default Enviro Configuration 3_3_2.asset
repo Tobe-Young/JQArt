@@ -388,9 +388,9 @@ MonoBehaviour:
   preset: {fileID: 11400000, guid: 0fcdd472bd6a8ec429fc1e9bc978c4fa, type: 2}
   showCirrusCloudsControls: 0
   show2DCloudsControls: 0
-  cloudFlatBaseAnim: {x: 0.2803393, y: 0.1419052}
-  cloudFlatDetailAnim: {x: -0.5974322, y: 0.7085516}
-  cirrusAnim: {x: -0.85984695, y: -0.9289206}
+  cloudFlatBaseAnim: {x: 0.27500126, y: 0.14724314}
+  cloudFlatDetailAnim: {x: -0.62412196, y: 0.73524135}
+  cirrusAnim: {x: -0.86251575, y: -0.9262518}
 --- !u!114 &-1480058932494092946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3834,7 +3834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0081d4f9e5d6e0a4d9fe8e7a8d7256b6, type: 3}
   m_Name: Time Module
   m_EditorClassIdentifier: 
-  showModuleInspector: 0
+  showModuleInspector: 1
   showSaveLoad: 0
   active: 1
   Settings:
@@ -3849,7 +3849,7 @@ MonoBehaviour:
     latitude: 0
     longitude: 0
     utcOffset: 0
-    cycleLengthInMinutes: 1
+    cycleLengthInMinutes: 5
     dayLengthModifier: 1
     nightLengthModifier: 1
     calenderType: 0
@@ -4655,6 +4655,7 @@ MonoBehaviour:
   showUnityFogControls: 0
   fogLights:
   - {fileID: 0}
+  - {fileID: 0}
   customFogDensityModifer: 1
   fogMat: {fileID: 0}
   volumetricsMat: {fileID: 0}
@@ -4719,7 +4720,7 @@ MonoBehaviour:
     audioTransitionSpeed: 1
   preset: {fileID: 11400000, guid: 8c4e279017d5e44458e3e4663b6ab460, type: 2}
   targetWeatherType: {fileID: 11400000, guid: bb17a17dcbe893f4d992633c085dc5eb, type: 2}
-  weatherBlendProgress: 0
+  weatherBlendProgress: 1
   globalAutoWeatherChange: 1
   triggerCollider: {fileID: 0}
   triggerRB: {fileID: 0}
