@@ -5594,6 +5594,7 @@ MonoBehaviour:
   CameraAngleOverride: 0
   LockCameraPosition: 0
   IsAircraftMode: 0
+  MaxAircraftHeight: 130
 --- !u!114 &1710852526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6253,7 +6254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damping: {x: 0.1, y: 0.1, z: 0.1}
+  Damping: {x: 0, y: 0, z: 0}
   ShoulderOffset: {x: 0, y: 0, z: 1.05}
   VerticalArmLength: 0
   CameraSide: 1
@@ -6279,8 +6280,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 46965f9cbaf525742a6da4c2172a99cd, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 1}
-  m_AmplitudeGain: 0.5
-  m_FrequencyGain: 0.3
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 0
   mNoiseOffsets: {x: -451.37964, y: 684.7062, z: 648.0488}
 --- !u!114 &1824031986
 MonoBehaviour:
