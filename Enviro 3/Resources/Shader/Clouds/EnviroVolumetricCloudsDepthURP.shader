@@ -22,6 +22,9 @@
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
 
+            #ifndef DYNAMIC_SCALING_APPLY_SCALEBIAS
+            #define DYNAMIC_SCALING_APPLY_SCALEBIAS(uv) (uv)
+            #endif
 
 			TEXTURE2D_X_FLOAT(_CameraDepthTexture);
             SAMPLER (sampler_CameraDepthTexture);
@@ -126,6 +129,9 @@
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
 
+            #ifndef DYNAMIC_SCALING_APPLY_SCALEBIAS
+            #define DYNAMIC_SCALING_APPLY_SCALEBIAS(uv) (uv)
+            #endif
 
 			TEXTURE2D_X_FLOAT(_CameraDepthTexture);
             SAMPLER (sampler_CameraDepthTexture);

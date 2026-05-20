@@ -25,6 +25,10 @@ Shader "Hidden/EnviroVolumetricCloudsBlendURP"
             #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
             #include_with_pragmas "../Includes/FogIncludeHLSL.hlsl"
 
+            #ifndef DYNAMIC_SCALING_APPLY_SCALEBIAS
+            #define DYNAMIC_SCALING_APPLY_SCALEBIAS(uv) (uv)
+            #endif
+
             TEXTURE2D_X(_MainTex);
             SAMPLER (sampler_MainTex);
 

@@ -26,6 +26,9 @@ Shader "Hidden/EnviroCloudsRaymarchURP"
             #include_with_pragmas "../Includes/VolumetricCloudsInclude.cginc"
             #include_with_pragmas "../Includes/VolumetricCloudsTexURPInclude.cginc"
 
+            #ifndef DYNAMIC_SCALING_APPLY_SCALEBIAS
+            #define DYNAMIC_SCALING_APPLY_SCALEBIAS(uv) (uv)
+            #endif
  
             int _Frame;
             uniform float _BlueNoiseIntensity;

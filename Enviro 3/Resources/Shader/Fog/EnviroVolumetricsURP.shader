@@ -26,6 +26,10 @@ Shader "Hidden/VolumetricsURP"
             #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
             #endif
 
+            #ifndef DYNAMIC_SCALING_APPLY_SCALEBIAS
+            #define DYNAMIC_SCALING_APPLY_SCALEBIAS(uv) (uv)
+            #endif
+
    
             float4x4 _LeftWorldFromView;
             float4x4 _RightWorldFromView;

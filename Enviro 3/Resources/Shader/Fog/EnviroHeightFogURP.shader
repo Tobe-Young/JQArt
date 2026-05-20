@@ -22,6 +22,10 @@
             #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
             #include_with_pragmas "../Includes/FogIncludeHLSL.hlsl"
 
+            #ifndef DYNAMIC_SCALING_APPLY_SCALEBIAS
+            #define DYNAMIC_SCALING_APPLY_SCALEBIAS(uv) (uv)
+            #endif
+
             struct appdata
             {
                 uint vertex : SV_VertexID;

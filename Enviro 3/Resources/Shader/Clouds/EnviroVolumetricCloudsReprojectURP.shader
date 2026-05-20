@@ -23,6 +23,10 @@
             #if defined (ENVIROURP)
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
+
+            #ifndef DYNAMIC_SCALING_APPLY_SCALEBIAS
+            #define DYNAMIC_SCALING_APPLY_SCALEBIAS(uv) (uv)
+            #endif
             
             float4 _MainTex_TexelSize;
             float4 _UndersampleCloudTex_TexelSize;

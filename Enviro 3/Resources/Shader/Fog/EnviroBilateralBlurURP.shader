@@ -58,6 +58,10 @@ Shader "Hidden/EnviroBlurURP"
 #if ENVIROURP17
 		#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
         #include "Packages/com.unity.render-pipelines.core/Runtime/Utilities/Blit.hlsl"
+
+        #ifndef DYNAMIC_SCALING_APPLY_SCALEBIAS
+        #define DYNAMIC_SCALING_APPLY_SCALEBIAS(uv) (uv)
+        #endif
 		
 		TEXTURE2D_X_FLOAT(_CameraDepthTexture);
 		SAMPLER(sampler_CameraDepthTexture);
@@ -151,7 +155,7 @@ Shader "Hidden/EnviroBlurURP"
 #if SHADER_TARGET > 40
 			o.uv  = DYNAMIC_SCALING_APPLY_SCALEBIAS(uv);
 #else
-			o.uv00 =  DYNAMIC_SCALING_APPLY_SCALEBIAS(uv); - 0.5 * texelSize.xy;
+			o.uv00 =  DYNAMIC_SCALING_APPLY_SCALEBIAS(uv) - 0.5 * texelSize.xy;
 			o.uv10 = o.uv00 + float2(texelSize.x, 0);
 			o.uv01 = o.uv00 + float2(0, texelSize.y);
 			o.uv11 = o.uv00 + texelSize.xy;
