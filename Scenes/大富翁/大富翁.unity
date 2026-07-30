@@ -4829,6 +4829,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 613207551}
   m_LocalEulerAnglesHint: {x: 0, y: -88.2, z: 0}
+--- !u!1 &896141485
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 896141486}
+  m_Layer: 0
+  m_Name: RoadItemsRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &896141486
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 896141485}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1010223250}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &905754441
 GameObject:
   m_ObjectHideFlags: 0
@@ -5691,6 +5722,10 @@ MonoBehaviour:
     anchor: {fileID: 1138109618}
   diceThrowPresenter: {fileID: 1010223252}
   propertyVisualPresenter: {fileID: 1010223251}
+  roadblockPrefab: {fileID: 5502861939946136916, guid: 903b6d28945ea84418eea34ad5a8667b, type: 3}
+  roadItemRoot: {fileID: 896141486}
+  roadItemVerticalOffset: -0.2
+  nodePickRadiusPixels: 72
   pawnSpacing: 0.6
   placeholderStepDelayMs: 120
   placeholderEffectDelayMs: 250
@@ -5707,7 +5742,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 896141486}
   m_Father: {fileID: 2137836605}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1010223251
