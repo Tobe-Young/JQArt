@@ -3200,6 +3200,7 @@ Transform:
   - {fileID: 2015751640}
   - {fileID: 357593970}
   - {fileID: 1086311540}
+  - {fileID: 964071010}
   - {fileID: 1037264751}
   - {fileID: 725144601}
   - {fileID: 1733709209}
@@ -3212,6 +3213,7 @@ Transform:
   - {fileID: 648914512}
   - {fileID: 1611206771}
   - {fileID: 1008302094}
+  - {fileID: 2051125654}
   - {fileID: 188909958}
   - {fileID: 222496875}
   - {fileID: 412768365}
@@ -5319,6 +5321,37 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4200907600819892959, guid: d253ecb8d390910489cf26fc99955d5b, type: 3}
   m_PrefabInstance: {fileID: 953924093}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &964071009
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 964071010}
+  m_Layer: 0
+  m_Name: node_138
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &964071010
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 964071009}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7874732, z: 0, w: 0.616349}
+  m_LocalPosition: {x: 187.24, y: 2.65, z: 136.38}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 613207551}
+  m_LocalEulerAnglesHint: {x: 0, y: 103.9, z: 0}
 --- !u!1 &976688226
 GameObject:
   m_ObjectHideFlags: 0
@@ -5787,11 +5820,16 @@ MonoBehaviour:
     anchor: {fileID: 1765791660}
   - nodeId: node_137
     anchor: {fileID: 1138109618}
+  - nodeId: node_138
+    anchor: {fileID: 964071010}
+  - nodeId: node_139
+    anchor: {fileID: 2051125654}
   diceThrowPresenter: {fileID: 1010223252}
   propertyVisualPresenter: {fileID: 1010223251}
   roadblockPrefab: {fileID: 364465424}
   roadItemRoot: {fileID: 896141486}
   roadItemVerticalOffset: -0.2
+  godFollowerLocalOffset: {x: 0.75, y: 0, z: 0}
   nodePickRadiusPixels: 72
   pawnSpacing: 0.6
   placeholderStepDelayMs: 120
@@ -11436,6 +11474,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 613207551}
   m_LocalEulerAnglesHint: {x: 0, y: -63.6, z: 0}
+--- !u!1 &2051125653
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2051125654}
+  m_Layer: 0
+  m_Name: node_139
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2051125654
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2051125653}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 164.35, y: 2.65, z: 142.92}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 613207551}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2070468687
 GameObject:
   m_ObjectHideFlags: 0
