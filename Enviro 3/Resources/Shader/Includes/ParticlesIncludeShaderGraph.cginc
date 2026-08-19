@@ -13,6 +13,7 @@ void ParticleZones_float(float3 pos, float density, out float alpha)
 {
     alpha = 1;
 
+#if defined(SHADER_API_D3D11) || defined(SHADER_API_METAL) || defined(SHADER_API_VULKAN)
     for (int i = 0; i < _EnviroRemovalZonesCount; i++)
     {
         if(_EnviroRemovalZones[i].type == 0) 
@@ -47,5 +48,6 @@ void ParticleZones_float(float3 pos, float density, out float alpha)
             alpha = density;
         }
     }
+#endif
 }
 
