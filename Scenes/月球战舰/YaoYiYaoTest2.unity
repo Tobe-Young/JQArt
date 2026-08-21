@@ -3941,6 +3941,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7737296824235544350, guid: 27e0e49a9b1c42c4081c354164bc48d4, type: 3}
   m_PrefabInstance: {fileID: 391626675}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &395608639
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 395608640}
+  m_Layer: 0
+  m_Name: GuardRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &395608640
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395608639}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.015, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &399707370
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14936,6 +14967,7 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
+  ForwardLockTransitionSpeed: 180
   IsAircraftMode: 0
   MaxAircraftHeight: 130
 --- !u!114 &1530662426
@@ -19934,3 +19966,4 @@ SceneRoots:
   - {fileID: 796992723}
   - {fileID: 1530662430}
   - {fileID: 1737785185}
+  - {fileID: 395608640}
