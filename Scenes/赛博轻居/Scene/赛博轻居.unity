@@ -301,6 +301,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: NaN
@@ -5514,6 +5534,7 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
+  ForwardLockTransitionSpeed: 180
   IsAircraftMode: 0
   MaxAircraftHeight: 30
 --- !u!114 &318695088
@@ -5536,6 +5557,8 @@ MonoBehaviour:
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
+  MaxTouchLookDeltaPerFrame: 12
+  MobileTouchLookSensitivity: 3
 --- !u!1 &335811721
 GameObject:
   m_ObjectHideFlags: 0
@@ -5567,6 +5590,7 @@ Transform:
   m_Children:
   - {fileID: 1385720561}
   - {fileID: 441544766}
+  - {fileID: 1145020638}
   - {fileID: 18848739}
   - {fileID: 1970878909}
   - {fileID: 1900235191}
@@ -5607,11 +5631,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 498890, guid: f92ddc120758be04aa175409643521ba, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0
+      value: -0.0001718998
       objectReference: {fileID: 0}
     - target: {fileID: 498890, guid: f92ddc120758be04aa175409643521ba, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.5075
+      value: -7.5
       objectReference: {fileID: 0}
     - target: {fileID: 498890, guid: f92ddc120758be04aa175409643521ba, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5706,6 +5730,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.y
@@ -5865,13 +5909,13 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 2
     m_Resolution: 3
     m_CustomResolution: -1
-    m_Strength: 0.8
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_Strength: 0.6
+    m_Bias: 0
+    m_NormalBias: 0
+    m_NearPlane: 1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -5898,7 +5942,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 2
+  m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -5937,7 +5981,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Version: 3
-  m_UsePipelineSettings: 1
+  m_UsePipelineSettings: 0
   m_AdditionalLightsShadowResolutionTier: 2
   m_LightLayerMask: 1
   m_RenderingLayers: 1
@@ -5946,7 +5990,7 @@ MonoBehaviour:
   m_ShadowRenderingLayers: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 0
+  m_SoftShadowQuality: 2
 --- !u!1 &466169185 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2365468577663877641, guid: d6f0e9c37bf637349a935a5cdb1826f7, type: 3}
@@ -6021,6 +6065,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -6327,6 +6391,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: NaN
@@ -6396,6 +6480,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.x
@@ -6593,6 +6697,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: 0.01953125
@@ -6666,6 +6790,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -6753,6 +6897,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.x
       value: 0.0078125
@@ -6775,6 +6939,124 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
   m_PrefabInstance: {fileID: 1129795930}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1145020637
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1145020638}
+  - component: {fileID: 1145020640}
+  - component: {fileID: 1145020639}
+  m_Layer: 0
+  m_Name: Directional Light (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1145020638
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145020637}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.17563155, y: 0.3625835, z: -0.9146753, w: -0.032494232}
+  m_LocalPosition: {x: 0, y: 1.023, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 335811722}
+  m_LocalEulerAnglesHint: {x: 42.431, y: 23.79, z: -174.72}
+--- !u!114 &1145020639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145020637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+--- !u!108 &1145020640
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145020637}
+  m_Enabled: 1
+  serializedVersion: 10
+  m_Type: 1
+  m_Shape: 0
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 0.5
+  m_Range: 10
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: 3
+    m_CustomResolution: -1
+    m_Strength: 0.8
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 2
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6995
+  m_UseColorTemperature: 1
+  m_BoundingSphereOverride: {x: 1.3563156e-19, y: 1.3563156e-19, z: 1.131937e+21, w: 1.861834e+25}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!1001 &1192842450
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6826,6 +7108,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.y
@@ -6892,6 +7194,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -6967,6 +7289,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7037,6 +7379,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.x
       value: 0.0078125
@@ -7106,6 +7468,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.x
@@ -7245,6 +7627,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -7404,6 +7806,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -8002,6 +8424,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.y
       value: 0
@@ -8071,6 +8513,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -8267,6 +8729,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: 0
@@ -8344,6 +8826,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -8551,6 +9053,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: 285948960
@@ -8646,7 +9168,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
-  m_Range: 10
+  m_Range: 15
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -8747,6 +9269,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: 8.1e-44
@@ -8830,7 +9372,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
-  m_Range: 10
+  m_Range: 15
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -8939,6 +9481,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: 0
@@ -9004,6 +9566,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -9113,6 +9695,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -9415,6 +10017,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: 0
@@ -9483,6 +10105,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.x
@@ -9630,7 +10272,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1578275007961717570}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fdce7d2c99a47a4aaed89c4c8fd18bd, type: 3}
   m_Name: 
@@ -9656,7 +10298,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1.7618928, y: 2.2447138, z: 1}
   m_Center: {x: 0.21217588, y: 1.158154, z: 0.6}
@@ -9830,7 +10472,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2226566473353208042
 Transform:
   m_ObjectHideFlags: 0
@@ -9940,7 +10582,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3444428352921940794, guid: 6d4a47552d4640b4f8c58c524dc42734, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14860,6 +15502,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: 23
@@ -15014,6 +15676,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: 0
@@ -15112,6 +15794,26 @@ PrefabInstance:
     - target: {fileID: 470558, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
       objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
@@ -15356,7 +16058,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 649675906722462284, guid: 96ec4f8e1817043409f65a1760467cf8, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20480,7 +21182,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 120490, guid: e42526a100ee55241a095c8651c45905, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 120490, guid: e42526a100ee55241a095c8651c45905, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -20569,7 +21271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 149524, guid: 1d6e1301f3125274fae37eac3b95800a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 149524, guid: 1d6e1301f3125274fae37eac3b95800a, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -20747,7 +21449,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &7392126783063055132 stripped
 Transform:
@@ -21120,6 +21822,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5722849425902391484, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Range
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_SpotAngle
+      value: 128.94307
+      objectReference: {fileID: 0}
+    - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 93.94304
+      objectReference: {fileID: 0}
     - target: {fileID: 7302912099135155195, guid: c9b16c0059acc67458bbce51fc9736fc, type: 3}
       propertyPath: m_BoundingSphereOverride.w
       value: 4e-45
@@ -21279,7 +22001,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3444428352921940794, guid: 6d4a47552d4640b4f8c58c524dc42734, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21382,7 +22104,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6840017090405535510, guid: 85c6f5be7b3fdce4a87ee061013f490e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

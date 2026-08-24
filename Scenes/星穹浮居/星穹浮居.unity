@@ -614,6 +614,7 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
+  ForwardLockTransitionSpeed: 180
   IsAircraftMode: 0
   MaxAircraftHeight: 30
 --- !u!114 &322792696
@@ -636,6 +637,8 @@ MonoBehaviour:
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
+  MaxTouchLookDeltaPerFrame: 12
+  MobileTouchLookSensitivity: 3
 --- !u!1 &399745084
 GameObject:
   m_ObjectHideFlags: 0
@@ -907,6 +910,10 @@ PrefabInstance:
     - target: {fileID: 8196979517031945882, guid: 8d63884502786f6428696b6cb92c6705, type: 3}
       propertyPath: m_Name
       value: "\u7535\u8111"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8196979517031945882, guid: 8d63884502786f6428696b6cb92c6705, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8215702564316361387, guid: 8d63884502786f6428696b6cb92c6705, type: 3}
       propertyPath: m_LocalPosition.x
