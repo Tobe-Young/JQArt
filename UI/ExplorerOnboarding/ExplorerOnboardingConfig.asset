@@ -13,12 +13,22 @@ MonoBehaviour:
   m_Name: ExplorerOnboardingConfig
   m_EditorClassIdentifier: 
   explorers:
+  - name: "\u9ED8\u8BA4\u89D2\u8272"
+    address: onboarding/models/default-robot
+    collectionId: 0
+    serialNumber: 0
+    defaultYaw: 180
+    clips: []
   - name: "\u96E8\u5E08\u59BE"
     address: onboarding/models/yushi-qie
+    collectionId: 0
+    serialNumber: 0
     defaultYaw: 180
     clips: []
   - name: "\u96E8\u5E08 \xB7 \u5143\u5B87\u5B99"
     address: yushi_yyz
+    collectionId: 0
+    serialNumber: 0
     defaultYaw: 180
     clips: []
   backgrounds:
@@ -31,5 +41,16 @@ MonoBehaviour:
   - name: "\u9759\u84DD"
     color: {r: 0.85882354, g: 0.91764706, b: 0.95686275, a: 1}
     sprite: {fileID: 0}
-  music: []
+  music:
+  - {fileID: 8300000, guid: 287355c5797604992bd88638aa1fb830, type: 3}
+  - {fileID: 8300000, guid: a2a0337c1acbfc6428c5aae72f80f937, type: 3}
+  - {fileID: 8300000, guid: 39f22b3796ee2a74fbf23a126fd151c0, type: 3}
+  - {fileID: 8300000, guid: 73bf49ca08c051845b04632f79e653ba, type: 3}
+  - {fileID: 8300000, guid: 691d7bdb39070414ab34f58eb263cb97, type: 3}
+  - {fileID: 8300000, guid: 0e650bb11509ea747af228e88555459b, type: 3}
+  - {fileID: 8300000, guid: ccf3e4186187c834f9663c69bb60018c, type: 3}
+  - {fileID: 8300000, guid: c3e2cc65a75cd41439de7ff844ae5dcf, type: 3}
+  - {fileID: 8300000, guid: 0cceac09ab0c3bf4b8a3cdec0062b63e, type: 3}
+  actions: {fileID: 11400000, guid: 832a6e567335a974ea32f8f550551de6, type: 2}
   entryChannelCode: 
+  featureHighlights: []
