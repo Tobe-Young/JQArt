@@ -39,6 +39,8 @@ bash Tools/AAUploadOnly.sh ServerData/ReleaseV4/iOS oss://jqsj-beijing/Unity/rel
 
 只读核验/初始化：在相同命令末尾加 `--audit-only`。该模式仅下载、校验并写本地列表，不向 OSS 上传。需要使用已发布的 catalog/hash；若本地构建 catalog 与现网不同，先将现网两文件下载至 Artifacts，再用 `--catalog <Artifacts中的catalog.json>` 指定，同时仍以真实构建目录提供 bundle。
 
+已映射的嵌套 bundle 使用此清单的 `objectKey → 原始相对路径` 关联定位构建源文件，因此复核前也必须同步清单。未知 catalog 结构或编码 bundle URL 会在上传前停止，不能将漏识别的依赖当成已经验证。
+
 不要并行发布同一前缀。工具有本地锁、清单乐观检查和远端 catalog 漂移检查，但 **不是跨机器分布式事务**；Git 同步清单和一次只运行一个发布者仍是要求。
 
 JSON 与 hash 是两个 OSS 对象，无法保证读者完全看不到中间态。工具先回读资源，再备份旧清单、写 JSON、最后写 hash。失败证据及原始 catalog 保存在主项目 `Artifacts/AAUploads/`，不能将中途失败当作整套已发布，也不会自动删除旧 bundle 或清客户端缓存。
