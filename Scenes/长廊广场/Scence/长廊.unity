@@ -6030,6 +6030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 10
   DataId: 10775
+  AllowTriggerClicks: 0
   _useTriggerColliderForClick: 0
   _useChildTriggerCollider: 0
 --- !u!21 &163303217
@@ -7323,6 +7324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 14
   DataId: 
+  AllowTriggerClicks: 0
   _useTriggerColliderForClick: 1
   _useChildTriggerCollider: 1
 --- !u!4 &353597245 stripped
@@ -22551,6 +22553,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 7
   DataId: 
+  AllowTriggerClicks: 0
   _useTriggerColliderForClick: 0
   _useChildTriggerCollider: 0
 --- !u!4 &432622737 stripped
@@ -22669,6 +22672,7 @@ Transform:
   - {fileID: 1241095943}
   - {fileID: 255997724}
   - {fileID: 1974240440}
+  - {fileID: 1848216920}
   m_Father: {fileID: 1073391656}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &440633145
@@ -22678,13 +22682,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 440633143}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fdce7d2c99a47a4aaed89c4c8fd18bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panel: 4
   DataId: 
+  AllowTriggerClicks: 0
   _useTriggerColliderForClick: 0
   _useChildTriggerCollider: 0
 --- !u!65 &440633146
@@ -22704,7 +22709,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 31.656178, y: 5.4187703, z: 15.310496}
   m_Center: {x: -0.18424225, y: 2.5731652, z: -7.4552484}
@@ -22865,6 +22870,7 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
+  ForwardLockTransitionSpeed: 180
   IsAircraftMode: 0
   MaxAircraftHeight: 30
 --- !u!114 &465636825
@@ -22887,6 +22893,8 @@ MonoBehaviour:
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
+  MaxTouchLookDeltaPerFrame: 12
+  MobileTouchLookSensitivity: 3
 --- !u!1 &466631689
 GameObject:
   m_ObjectHideFlags: 0
@@ -40394,6 +40402,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 12
   DataId: 
+  AllowTriggerClicks: 0
   _useTriggerColliderForClick: 1
   _useChildTriggerCollider: 1
 --- !u!4 &986486224 stripped
@@ -41240,6 +41249,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 0
   DataId: "\u6C89\u6D78\u5F0F\u6570\u85CF"
+  AllowTriggerClicks: 0
   _useTriggerColliderForClick: 0
   _useChildTriggerCollider: 0
 --- !u!1 &1073391655
@@ -42720,6 +42730,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 5
   DataId: 
+  AllowTriggerClicks: 0
   _useTriggerColliderForClick: 0
   _useChildTriggerCollider: 0
 --- !u!1001 &1438635735
@@ -42829,6 +42840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 6
   DataId: 
+  AllowTriggerClicks: 0
   _useTriggerColliderForClick: 0
   _useChildTriggerCollider: 0
 --- !u!135 &1453838282
@@ -53594,6 +53606,101 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea7cac2e97716394e8d8737c6c43a872, type: 3}
+--- !u!1 &1642330261
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1642330262}
+  - component: {fileID: 1642330265}
+  - component: {fileID: 1642330264}
+  - component: {fileID: 1642330263}
+  m_Layer: 0
+  m_Name: OutdoorRouteTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1642330262
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642330261}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.2, z: 118.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2136023091}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1642330263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642330261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 209d4e10dfaa83e439e1ae24bcbbb7b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Route: 0
+--- !u!54 &1642330264
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642330261}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &1642330265
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642330261}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7, y: 5, z: 4}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!28 &1653525362
 Texture2D:
   m_ObjectHideFlags: 0
@@ -74177,6 +74284,101 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1838617576}
   m_CullTransparentMesh: 1
+--- !u!1 &1848216919
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1848216920}
+  - component: {fileID: 1848216923}
+  - component: {fileID: 1848216922}
+  - component: {fileID: 1848216921}
+  m_Layer: 0
+  m_Name: OutdoorRouteTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1848216920
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848216919}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalPosition: {x: 0, y: 2.2, z: -1.0400009}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 440633144}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1848216921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848216919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 209d4e10dfaa83e439e1ae24bcbbb7b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Route: 1
+--- !u!54 &1848216922
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848216919}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &1848216923
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848216919}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7, y: 5, z: 4}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1870123372
 GameObject:
   m_ObjectHideFlags: 0
@@ -79246,6 +79448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 13
   DataId: 
+  AllowTriggerClicks: 0
   _useTriggerColliderForClick: 1
   _useChildTriggerCollider: 1
 --- !u!4 &1887880019 stripped
@@ -84211,6 +84414,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 11
   DataId: 
+  AllowTriggerClicks: 0
   _useTriggerColliderForClick: 1
   _useChildTriggerCollider: 1
 --- !u!4 &1924249361 stripped
@@ -94728,6 +94932,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 1
   DataId: 
+  AllowTriggerClicks: 0
   _useTriggerColliderForClick: 1
   _useChildTriggerCollider: 0
 --- !u!1 &2075757592
@@ -95022,6 +95227,7 @@ Transform:
   - {fileID: 4311740855058997204}
   - {fileID: 5962393690136365214}
   - {fileID: 833951595359890900}
+  - {fileID: 1642330262}
   m_Father: {fileID: 1767741466}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2136023092
@@ -95041,7 +95247,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 29.026382, y: 4.9705715, z: 13.278557}
   m_Center: {x: -0.03806305, y: 2.5852857, z: 112.95363}
@@ -95052,13 +95258,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136023090}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fdce7d2c99a47a4aaed89c4c8fd18bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panel: 3
   DataId: 
+  AllowTriggerClicks: 0
   _useTriggerColliderForClick: 0
   _useChildTriggerCollider: 0
 --- !u!1 &2136244782
@@ -101115,6 +101322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: 0
   DataId: "\u5E73\u53F0\u52A8\u5411"
+  AllowTriggerClicks: 0
   _useTriggerColliderForClick: 0
   _useChildTriggerCollider: 0
 --- !u!1 &4638552725011094697
