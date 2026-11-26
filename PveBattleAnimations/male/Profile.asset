@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a8c306b074e6e34fab8073add33e62e, type: 3}
+  m_Name: Profile
+  m_EditorClassIdentifier: 
+  driver: 1
+  controller: {fileID: 9100000, guid: 381fdea22be2fed4d93bc3e46c0f03ec, type: 2}
+  avatar: {fileID: 0}
+  actions:
+  - action: Idle
+    clip: {fileID: 7400000, guid: a030add15aa2d5c4483059d840cdc6d0, type: 2}
+    state: Idle
+    duration: 1
+    loop: 1
+    terminal: 0
+  - action: Attack
+    clip: {fileID: 7400000, guid: 44503b140ac38c14592c1fd66ae6bdec, type: 2}
+    state: Attack
+    duration: 1
+    loop: 0
+    terminal: 0
+  - action: Hit
+    clip: {fileID: 7400000, guid: 101a6e4d71f5ca3408154c39aebce969, type: 2}
+    state: Hit
+    duration: 1
+    loop: 0
+    terminal: 0
+  - action: Defeat
+    clip: {fileID: 7400000, guid: 706e3cf6897bf7c43941028df6ace148, type: 2}
+    state: Defeat
+    duration: 1
+    loop: 0
+    terminal: 1
+  - action: Down
+    clip: {fileID: 7400000, guid: 993b28a16c1419c499e8ec141f41a995, type: 2}
+    state: Down
+    duration: 1
+    loop: 1
+    terminal: 1
+  - action: StandUp
+    clip: {fileID: 7400000, guid: 8b4e6a603819ecb4781c24765f58d15f, type: 2}
+    state: StandUp
+    duration: 1
+    loop: 0
+    terminal: 0
+  - action: HeavyHit
+    clip: {fileID: 0}
+    state: HeavyHit
+    duration: 2.2333336
+    loop: 0
+    terminal: 0
