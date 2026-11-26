@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: VioletRift
+  m_Shader: {fileID: 4800000, guid: ca83256ca79903b0f71d0ba4bee2d3bc, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _FlowNoise:
+        m_Texture: {fileID: 2800000, guid: 6aa9f16d147e4b1cdaccb2b747c0a05c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _CoreDensity: 1.15
+    - _Emission: 1.1
+    - _EnergySpeed: 1
+    - _FrontWarp: 1.2
+    - _Inflow: 1.35
+    - _MiddleWarp: 1.7
+    - _RearWarp: 2
+    - _RimWarp: 2.5
+    - _SmokeDensity: 0
+    - _SmokeWarp: 0.7
+    - _Spacing: 0.2
+    - _Spin: 1
+    - _Steps: 64
+    - _Thickness: 0.3
+    - _WallWarp: 3
+    m_Colors:
+    - _CoreColor: {r: 0.9042453, g: 0.8632076, b: 1, a: 1}
+    - _FrontColor: {r: 0.55121225, g: 0.9490196, b: 0.16078432, a: 1}
+    - _MiddleColor: {r: 1.16, g: 0.8890357, b: 0.09109944, a: 1}
+    - _RearColor: {r: 0.2470594, g: 0.12041882, b: 1.15, a: 1}
+    - _RimColor: {r: 0.57258546, g: 1.3999999, b: 0.17591622, a: 1}
+    - _SmokeColor: {r: 0.067707956, g: 0.09433961, b: 0.011124953, a: 1}
+    - _SparkColor: {r: 1.1988602, g: 1.45, b: 0.93376964, a: 1}
+    - _WallColor: {r: 0.6757852, g: 0.8784314, b: 0.074509785, a: 1}
+  m_BuildTextureStacks: []
